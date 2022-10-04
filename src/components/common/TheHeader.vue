@@ -3,7 +3,7 @@
     <base-container>
       <el-row>
         <el-col :span="12">
-          <p class="logo-text">Takeaway</p>
+          <p @click="$router.push('/')" class="logo-text">Takeaway</p>
           <el-input
             placeholder="Search Restaurant and Product"
             :prefix-icon="Search"
@@ -48,6 +48,7 @@ header p.logo-text {
   letter-spacing: -0.04em;
   text-transform: lowercase;
   color: #fe5d1f;
+  cursor: pointer;
 }
 
 header .el-input {

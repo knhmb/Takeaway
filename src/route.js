@@ -5,6 +5,7 @@ import Search from "./pages/Search";
 import Restaurant from "./pages/Restaurant";
 import Cart from "./pages/Cart";
 import Cart2 from "./pages/Cart-2";
+import Order from "./pages/Order";
 
 const router = createRouter({
   history: createWebHistory(),
@@ -32,6 +33,10 @@ const router = createRouter({
     {
       path: "/cart-2",
       component: Cart2,
+    },
+    {
+      path: "/order",
+      component: Order,
     },
   ],
 });
