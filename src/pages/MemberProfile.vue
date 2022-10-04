@@ -33,7 +33,14 @@
                 <img src="../assets/profile-change-password.png" alt="" />
                 <p>Change password</p>
               </div>
-              <div class="menu-list">
+              <div
+                @click="navigate('delivery-address')"
+                :class="{
+                  'is-active':
+                    $route.path === '/member-profile/delivery-address',
+                }"
+                class="menu-list"
+              >
                 <img src="../assets/profile-address.png" alt="" />
                 <p>Delivery address</p>
               </div>
