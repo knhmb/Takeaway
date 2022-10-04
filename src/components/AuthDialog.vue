@@ -1,20 +1,43 @@
 <template>
   <div class="auth-dialog">
     <el-dialog
-      v-model="dialogVisible"
-      title="Tips"
+      :model-value="dialogVisible"
       width="30%"
-      :before-close="handleClose"
+      @close="$emit('closedDialog', false)"
     >
-      <span>This is a message</span>
-      <template #footer>
-        <span class="dialog-footer">
-          <el-button @click="dialogVisible = false">Cancel</el-button>
-          <el-button type="primary" @click="dialogVisible = false"
-            >Confirm</el-button
-          >
-        </span>
-      </template>
+      <img
+        @click="$emit('closedDialog', false)"
+        src="../assets/close.png"
+        class="close"
+        alt=""
+      />
+      <Login />
     </el-dialog>
   </div>
 </template>
+
+<script>
+import Login from "./Login.vue";
+export default {
+  props: ["dialogVisible"],
+  components: { Login },
+};
+</script>
+
+<style scoped>
+.auth-dialog :deep(.el-dialog__header) {
+  display: none;
+}
+
+.auth-dialog :deep(.el-dialog) {
+  border-radius: 8px;
+}
+
+.auth-dialog img.close {
+  width: 1rem;
+  margin-left: auto;
+  display: block;
+  margin-bottom: 1rem;
+  cursor: pointer;
+}
+</style>

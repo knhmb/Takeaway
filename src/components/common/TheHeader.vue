@@ -10,19 +10,28 @@
           ></el-input>
           <img src="../../assets/filter.png" alt="" />
         </el-col>
-        <el-col :span="12"> <el-button>Sign in</el-button> </el-col>
+        <el-col :span="12">
+          <el-button @click="dialogVisible = true">Sign in</el-button>
+        </el-col>
       </el-row>
     </base-container>
+    <AuthDialog
+      :dialog-visible="dialogVisible"
+      @closedDialog="dialogVisible = $event"
+    />
   </header>
 </template>
 
 <script>
 import { Search } from "@element-plus/icons-vue";
+import AuthDialog from "../AuthDialog.vue";
 
 export default {
+  components: { AuthDialog },
   data() {
     return {
       Search,
+      dialogVisible: false,
     };
   },
 };
