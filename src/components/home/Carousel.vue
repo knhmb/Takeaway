@@ -33,9 +33,21 @@ export default {
   padding-top: 0.5rem;
 }
 
-.carousel :deep(.carousel__track) {
-  gap: 0.5rem;
+/* .carousel :deep(.carousel__slide.carousel__slide--visible) {
+  margin-right: 0.5rem;
+} */
+
+.carousel img {
+  width: 100%;
 }
+
+.carousel img {
+  padding-right: 0.5rem;
+}
+
+/* .carousel :deep(.carousel__track) {
+  gap: 0.5rem;
+} */
 
 .carousel :deep(.carousel__next) {
   background: #ffffff;
