@@ -21,7 +21,9 @@
       </el-form-item>
       <el-form-item>
         <el-checkbox v-model="check" label="Remember me"></el-checkbox>
-        <p class="forgot-password">Forgot password?</p>
+        <p @click="changeOption('forgot-password')" class="forgot-password">
+          Forgot password?
+        </p>
       </el-form-item>
       <el-form-item>
         <el-button class="continue">Continue</el-button>
@@ -38,7 +40,11 @@
         <el-button class="google">Continue with Google</el-button>
       </el-form-item>
       <el-form-item>
-        <p class="account">Don’t have account yet?<span>Sign up</span></p>
+        <p class="account">
+          Don’t have account yet?<span @click="changeOption('signup-options')"
+            >Sign up</span
+          >
+        </p>
       </el-form-item>
     </el-form>
   </div>
@@ -61,6 +67,9 @@ export default {
       } else {
         this.passwordType = "password";
       }
+    },
+    changeOption(option) {
+      this.$store.commit("CHANGE_AUTH_OPTION", option);
     },
   },
 };
@@ -187,5 +196,14 @@ export default {
   color: #fe5d1f;
   margin-left: 0.5rem;
   cursor: pointer;
+}
+
+.login :deep(.el-divider__text.is-center) {
+  font-family: "Inter";
+  font-style: normal;
+  font-weight: 500;
+  font-size: 12px;
+  line-height: 20px;
+  color: #575d66;
 }
 </style>

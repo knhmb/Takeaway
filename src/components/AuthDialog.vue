@@ -1,26 +1,40 @@
 <template>
   <div class="auth-dialog">
-    <el-dialog
-      :model-value="dialogVisible"
-      width="30%"
-      @close="$emit('closedDialog', false)"
-    >
+    <el-dialog :model-value="dialogVisible" width="30%" @close="closeDialog">
       <img
-        @click="$emit('closedDialog', false)"
+        v-if="authOption === 'login'"
+        @click="closeDialog"
         src="../assets/close.png"
         class="close"
         alt=""
       />
-      <Login />
+      <Login v-if="authOption === 'login'" />
+      <ForgotPassword v-if="authOption === 'forgot-password'" />
+      <SignupOptions v-if="authOption === 'signup-options'" />
+      <Signup v-if="authOption === 'signup'" />
     </el-dialog>
   </div>
 </template>
 
 <script>
 import Login from "./Login.vue";
+import ForgotPassword from "./ForgotPassword.vue";
+import SignupOptions from "./SignupOptions.vue";
+import Signup from "./Signup.vue";
 export default {
   props: ["dialogVisible"],
-  components: { Login },
+  components: { Login, ForgotPassword, SignupOptions, Signup },
+  computed: {
+    authOption() {
+      return this.$store.getters.authOption;
+    },
+  },
+  methods: {
+    closeDialog() {
+      this.$emit("closedDialog", false);
+      this.$store.commit("CHANGE_AUTH_OPTION", "login");
+    },
+  },
 };
 </script>
 

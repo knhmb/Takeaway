@@ -20,6 +20,9 @@ export default {
     Favorites,
     LowestDelivery,
   },
+  created() {
+    this.$store.commit("CHANGE_AUTH_OPTION", "login");
+  },
 };
 </script>
 
