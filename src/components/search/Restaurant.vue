@@ -3,7 +3,7 @@
     <base-container>
       <h2>Restaurant</h2>
       <el-row :gutter="10">
-        <el-col v-for="item in 15" :key="item" :span="6">
+        <el-col v-for="item in 15" :key="item" :sm="12" :md="6">
           <div class="card">
             <div class="top">
               <img src="@/assets/restaurant.png" alt="" />

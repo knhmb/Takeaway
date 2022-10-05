@@ -65,4 +65,10 @@ export default {
   padding: 1.2rem;
   margin-top: 1rem;
 }
+
+@media screen and (max-width: 991px) {
+  .maps-dialog :deep(.el-dialog) {
+    width: 95%;
+  }
+}
 </style>

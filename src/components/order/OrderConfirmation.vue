@@ -1,7 +1,7 @@
 <template>
   <div class="order-confirmation">
     <h4>Waiting for confirmation</h4>
-    <carousel :items-to-show="4">
+    <carousel :breakpoints="breakpoints">
       <slide v-for="slide in 5" :key="slide">
         <div class="card">
           <img src="../../assets/restaurant.png" alt="" />
@@ -32,6 +32,26 @@ export default {
     Slide,
     Navigation,
   },
+  data() {
+    return {
+      breakpoints: {
+        300: {
+          itemsToShow: 1,
+          snapAlign: "center",
+        },
+        // 700px and up
+        700: {
+          itemsToShow: 2,
+          snapAlign: "center",
+        },
+        // 1024 and up
+        1024: {
+          itemsToShow: 4,
+          snapAlign: "start",
+        },
+      },
+    };
+  },
 };
 </script>
 
@@ -53,6 +73,7 @@ export default {
   padding: 0.5rem;
   text-align: start;
   margin-right: 0.7rem;
+  width: 100%;
 }
 
 .order-confirmation .card img {
@@ -117,6 +138,10 @@ export default {
   gap: 0.5rem;
 } */
 
+.order-confirmation :deep(.carousel__slide) {
+  justify-content: flex-start;
+}
+
 .order-confirmation :deep(.carousel__next) {
   background: #ffffff;
   box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.04);
@@ -137,5 +162,15 @@ export default {
 .order-confirmation
   :deep(.carousel__prev--in-active, .carousel__next--in-active) {
   display: none;
+}
+
+@media screen and (max-width: 991px) {
+  .order-confirmation :deep(.carousel__next) {
+    right: 0;
+  }
+
+  .order-confirmation :deep(.carousel__prev) {
+    left: 0;
+  }
 }
 </style>

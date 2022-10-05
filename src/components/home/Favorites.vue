@@ -3,10 +3,10 @@
     <base-container>
       <h2>Favorites</h2>
 
-      <carousel :items-to-show="1">
+      <carousel :breakpoints="breakpoints">
         <slide v-for="slide in 4" :key="slide">
           <el-row :gutter="10">
-            <el-col :span="6">
+            <el-col :sm="12" :md="6">
               <div class="card">
                 <div class="top">
                   <img src="../../assets/restaurant.png" alt="" />
@@ -18,7 +18,7 @@
                 </p>
               </div>
             </el-col>
-            <el-col :span="6">
+            <el-col :sm="12" :md="6">
               <div class="card">
                 <div class="top">
                   <img src="../../assets/restaurant.png" alt="" />
@@ -30,7 +30,7 @@
                 </p>
               </div>
             </el-col>
-            <el-col :span="6">
+            <el-col :sm="12" :md="6">
               <div class="card">
                 <div class="top">
                   <img src="../../assets/restaurant.png" alt="" />
@@ -42,7 +42,7 @@
                 </p>
               </div>
             </el-col>
-            <el-col :span="6">
+            <el-col :sm="12" :md="6">
               <div class="card">
                 <div class="top">
                   <img src="../../assets/restaurant.png" alt="" />
@@ -54,7 +54,7 @@
                 </p>
               </div>
             </el-col>
-            <el-col :span="6">
+            <el-col :sm="12" :md="6">
               <div class="card">
                 <div class="top">
                   <img src="../../assets/restaurant.png" alt="" />
@@ -66,7 +66,7 @@
                 </p>
               </div>
             </el-col>
-            <el-col :span="6">
+            <el-col :sm="12" :md="6">
               <div class="card">
                 <div class="top">
                   <img src="../../assets/restaurant.png" alt="" />
@@ -78,7 +78,7 @@
                 </p>
               </div>
             </el-col>
-            <el-col :span="6">
+            <el-col :sm="12" :md="6">
               <div class="card">
                 <div class="top">
                   <img src="../../assets/restaurant.png" alt="" />
@@ -90,7 +90,7 @@
                 </p>
               </div>
             </el-col>
-            <el-col :span="6">
+            <el-col :sm="12" :md="6">
               <div class="card">
                 <div class="top">
                   <img src="../../assets/restaurant.png" alt="" />
@@ -123,6 +123,26 @@ export default {
     Carousel,
     Slide,
     Navigation,
+  },
+  data() {
+    return {
+      breakpoints: {
+        300: {
+          itemsToShow: 1,
+          snapAlign: "center",
+        },
+        // 700px and up
+        700: {
+          itemsToShow: 1,
+          snapAlign: "center",
+        },
+        // 1024 and up
+        1024: {
+          itemsToShow: 1,
+          snapAlign: "start",
+        },
+      },
+    };
   },
 };
 </script>
@@ -217,5 +237,15 @@ export default {
 .favorites
   :deep(.carousel__slide.carousel__slide--active.carousel__slide--visible) {
   margin: 0;
+}
+
+@media screen and (max-width: 991px) {
+  .favorites :deep(.carousel__next) {
+    right: 0;
+  }
+
+  .favorites :deep(.carousel__prev) {
+    left: 0;
+  }
 }
 </style>

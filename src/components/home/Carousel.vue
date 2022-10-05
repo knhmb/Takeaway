@@ -1,7 +1,7 @@
 <template>
   <div class="carousel">
     <base-container>
-      <carousel :items-to-show="3">
+      <carousel :breakpoints="breakpoints">
         <slide v-for="slide in 5" :key="slide">
           <img src="../../assets/banner.png" alt="" />
         </slide>
@@ -24,6 +24,26 @@ export default {
     Carousel,
     Slide,
     Navigation,
+  },
+  data() {
+    return {
+      breakpoints: {
+        300: {
+          itemsToShow: 1,
+          snapAlign: "center",
+        },
+        // 700px and up
+        700: {
+          itemsToShow: 2,
+          snapAlign: "center",
+        },
+        // 1024 and up
+        1024: {
+          itemsToShow: 3,
+          snapAlign: "start",
+        },
+      },
+    };
   },
 };
 </script>
@@ -68,5 +88,15 @@ export default {
 
 .carousel :deep(.carousel__prev--in-active, .carousel__next--in-active) {
   display: none;
+}
+
+@media screen and (max-width: 991px) {
+  .carousel :deep(.carousel__next) {
+    right: 0;
+  }
+
+  .carousel :deep(.carousel__prev) {
+    left: 0;
+  }
 }
 </style>

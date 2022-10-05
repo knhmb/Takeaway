@@ -180,4 +180,10 @@ export default {
   padding: 1.2rem;
   margin-top: 1rem;
 }
+
+@media screen and (max-width: 1199px) {
+  .right-section {
+    margin-top: 1rem;
+  }
+}
 </style>

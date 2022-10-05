@@ -2,7 +2,7 @@
   <section class="restaurant-items">
     <base-container>
       <el-row :gutter="15">
-        <el-col :span="16">
+        <el-col :sm="24" :lg="16">
           <div class="card">
             <div class="top">
               <h2>Papadam Indian Authentic</h2>
@@ -40,7 +40,7 @@
           </div>
           <Popular />
         </el-col>
-        <el-col :span="8">
+        <el-col :sm="24" :lg="8">
           <RightSection />
         </el-col>
       </el-row>

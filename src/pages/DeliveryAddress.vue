@@ -36,7 +36,7 @@ import MapsDialog from "@/components/delivery-address/MapsDialog.vue";
 export default {
   data() {
     return {
-      dialogVisible: true,
+      dialogVisible: false,
       info: [
         {
           isVisible: false,

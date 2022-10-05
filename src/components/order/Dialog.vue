@@ -232,4 +232,21 @@ export default {
 .order-dialog .inner-box .single-item p.total-price {
   color: #141414;
 }
+
+@media screen and (max-width: 991px) {
+  .order-dialog :deep(.el-dialog) {
+    width: 35rem;
+  }
+}
+
+@media screen and (max-width: 570px) {
+  .order-dialog :deep(.el-dialog) {
+    width: 25rem;
+  }
+}
+@media screen and (max-width: 402px) {
+  .order-dialog :deep(.el-dialog) {
+    width: 20rem;
+  }
+}
 </style>

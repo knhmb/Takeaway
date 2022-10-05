@@ -3,7 +3,7 @@
     <base-container>
       <h2>Cart</h2>
       <el-row :gutter="30">
-        <el-col :span="16">
+        <el-col :sm="24" :lg="16">
           <div class="card">
             <div class="top">
               <div class="text">
@@ -21,7 +21,7 @@
           <PaymentMethod />
           <OrderSummary />
         </el-col>
-        <el-col :span="8">
+        <el-col :sm="24" :lg="8">
           <RightSection />
         </el-col>
       </el-row>

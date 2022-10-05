@@ -3,7 +3,7 @@
     <base-container>
       <h2>Product</h2>
       <el-row :gutter="10">
-        <el-col v-for="item in 12" :key="item" :span="6">
+        <el-col v-for="item in 12" :key="item" :sm="12" :md="6">
           <div class="card">
             <img src="@/assets/cuisine.png" alt="" />
             <p class="title">Product name product name...</p>

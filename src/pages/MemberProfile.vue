@@ -2,7 +2,7 @@
   <section class="member-profile">
     <base-container>
       <el-row :gutter="30">
-        <el-col :span="8">
+        <el-col :sm="24" :lg="8">
           <div class="card">
             <div class="top">
               <div class="avatar">
@@ -67,24 +67,37 @@
             </div>
           </div>
           <div class="card">
-            <p class="delete">Delete my account</p>
+            <p class="delete" @click="dialogVisible = true">
+              Delete my account
+            </p>
           </div>
         </el-col>
-        <el-col :span="16">
+        <el-col :sm="24" :lg="16">
           <router-view></router-view>
         </el-col>
       </el-row>
     </base-container>
+    <DeleteDialog
+      :dialog-visible="dialogVisible"
+      @closedDialog="dialogVisible = $event"
+    />
   </section>
 </template>
 
 <script>
+import DeleteDialog from "@/components/DeleteDialog.vue";
 export default {
+  data() {
+    return {
+      dialogVisible: false,
+    };
+  },
   methods: {
     navigate(path) {
       this.$router.push({ name: path });
     },
   },
+  components: { DeleteDialog },
 };
 </script>
 
@@ -185,5 +198,6 @@ export default {
   line-height: 24px;
   letter-spacing: -0.02em;
   color: #fe5d1f;
+  cursor: pointer;
 }
 </style>

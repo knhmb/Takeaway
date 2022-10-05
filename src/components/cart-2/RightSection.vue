@@ -51,4 +51,10 @@
   padding: 1.3rem;
   border-color: #fe5d1f;
 }
+
+@media screen and (max-width: 1199px) {
+  .cart-2-right-section {
+    margin-top: 1rem;
+  }
+}
 </style>
