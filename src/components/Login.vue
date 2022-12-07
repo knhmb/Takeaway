@@ -1,12 +1,13 @@
+<!-- eslint-disable vue/multi-word-component-names -->
 <template>
   <div class="login">
     <h2>Let’s get you started!</h2>
     <p class="note">Continue to your takeaway account</p>
-    <el-form>
-      <el-form-item>
-        <el-input v-model="username" placeholder="Username"></el-input>
+    <el-form ref="ruleFormRef" :model="ruleForm" :rules="rules">
+      <el-form-item prop="username">
+        <el-input v-model="ruleForm.username" placeholder="Username"></el-input>
       </el-form-item>
-      <el-form-item>
+      <el-form-item prop="password">
         <img
           @click="changeType"
           class="show-password"
@@ -14,7 +15,7 @@
           alt=""
         />
         <el-input
-          v-model="password"
+          v-model="ruleForm.password"
           :type="passwordType"
           placeholder="Password"
         ></el-input>
@@ -26,7 +27,7 @@
         </p>
       </el-form-item>
       <el-form-item>
-        <el-button class="continue">Continue</el-button>
+        <el-button class="continue" @click="login">Continue</el-button>
       </el-form-item>
       <el-form-item>
         <el-divider content-position="center">Or</el-divider>
@@ -54,10 +55,20 @@
 export default {
   data() {
     return {
-      username: "",
-      password: "",
+      ruleForm: {
+        username: "",
+        password: "",
+      },
       check: false,
       passwordType: "password",
+      rules: {
+        username: [
+          { required: true, message: "Username is required!", trigger: "blur" },
+        ],
+        password: [
+          { required: true, message: "Password is required!", trigger: "blur" },
+        ],
+      },
     };
   },
   methods: {
@@ -70,6 +81,20 @@ export default {
     },
     changeOption(option) {
       this.$store.commit("CHANGE_AUTH_OPTION", option);
+    },
+    login() {
+      this.$refs.ruleFormRef.validate((valid) => {
+        if (valid) {
+          const data = {
+            username: this.ruleForm.username,
+            password: this.ruleForm.password,
+          };
+
+          this.$store.dispatch("auth/login", data).then(() => {
+            this.$emit("closeDialog");
+          });
+        }
+      });
     },
   },
 };

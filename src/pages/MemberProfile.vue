@@ -104,6 +104,7 @@ export default {
 <style scoped>
 .member-profile {
   background: #f2f2f2;
+  min-height: 100vh;
 }
 
 .member-profile .card {

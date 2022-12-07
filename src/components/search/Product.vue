@@ -1,21 +1,35 @@
+<!-- eslint-disable vue/multi-word-component-names -->
 <template>
   <div class="product">
     <base-container>
       <h2>Product</h2>
       <el-row :gutter="10">
-        <el-col v-for="item in 12" :key="item" :sm="12" :md="6">
+        <el-col v-for="item in products" :key="item" :sm="12" :md="6">
           <div class="card">
             <img src="@/assets/cuisine.png" alt="" />
-            <p class="title">Product name product name...</p>
-            <span>HK$ 80.0</span>
+            <p class="title">{{ item.name }}</p>
+            <span>HK$ {{ item.price }}</span>
             <span>·</span>
-            <span>Restaurant name</span>
+            <span>{{ item.restaurant }}</span>
           </div>
         </el-col>
       </el-row>
     </base-container>
   </div>
 </template>
+
+<script>
+export default {
+  computed: {
+    products() {
+      return this.$store.getters["dashboard/products"];
+    },
+  },
+  created() {
+    this.$store.dispatch("dashboard/getProducts");
+  },
+};
+</script>
 
 <style scoped>
 .product h2 {
@@ -48,7 +62,7 @@
   font-style: normal;
   font-weight: 500;
   font-size: 14px;
-  line-height: 12px;
+  line-height: 18px;
   color: #141414;
   margin: 0.5rem 0;
 }

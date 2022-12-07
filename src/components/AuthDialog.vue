@@ -8,7 +8,7 @@
         class="close"
         alt=""
       />
-      <Login v-if="authOption === 'login'" />
+      <Login @closeDialog="closeDialog" v-if="authOption === 'login'" />
       <ForgotPassword v-if="authOption === 'forgot-password'" />
       <SignupOptions v-if="authOption === 'signup-options'" />
       <Signup v-if="authOption === 'signup'" />

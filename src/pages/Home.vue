@@ -1,3 +1,4 @@
+<!-- eslint-disable vue/multi-word-component-names -->
 <template>
   <section class="home">
     <Carousel />
@@ -22,6 +23,7 @@ export default {
   },
   created() {
     this.$store.commit("CHANGE_AUTH_OPTION", "login");
+    this.$store.dispatch("dashboard/getCmsContent");
   },
 };
 </script>
