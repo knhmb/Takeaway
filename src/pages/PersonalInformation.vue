@@ -2,21 +2,26 @@
   <section class="personal-information">
     <base-card>
       <h3>Personal information</h3>
-      <el-form :model="ruleForm" label-position="top">
-        <el-form-item label="Username">
+      <el-form
+        :model="ruleForm"
+        ref="ruleFormRef"
+        :rules="rules"
+        label-position="top"
+      >
+        <el-form-item prop="username" label="Username">
           <el-input v-model="ruleForm.username"></el-input>
         </el-form-item>
-        <el-form-item label="Display name">
+        <el-form-item prop="displayName" label="Display name">
           <el-input v-model="ruleForm.displayName"></el-input>
         </el-form-item>
-        <el-form-item label="Email">
+        <el-form-item prop="email" label="Email">
           <el-input v-model="ruleForm.email"></el-input>
         </el-form-item>
         <el-form-item label="Phone">
           <el-input v-model="ruleForm.phone"></el-input>
         </el-form-item>
         <el-form-item>
-          <el-button>Save</el-button>
+          <el-button @click="updateInfo">Save</el-button>
         </el-form-item>
       </el-form>
     </base-card>
@@ -24,6 +29,7 @@
 </template>
 
 <script>
+import { ElNotification } from "element-plus";
 export default {
   data() {
     return {
@@ -33,7 +39,64 @@ export default {
         email: "chantaiman@email.com",
         phone: "98761234",
       },
+      rules: {
+        username: [
+          { required: true, message: "Username is required!", trigger: "blur" },
+        ],
+        displayName: [
+          { required: true, message: "Name is required!", trigger: "blur" },
+        ],
+        email: [
+          { required: true, message: "Email is required!", trigger: "blur" },
+          {
+            type: "email",
+            message: "Please enter a valid email!",
+            trigger: ["change", "blur"],
+          },
+        ],
+      },
     };
+  },
+  computed: {
+    currentUserDetails() {
+      return this.$store.getters["auth/currentUserDetails"];
+    },
+  },
+  methods: {
+    updateInfo() {
+      this.$refs.ruleFormRef.validate((valid) => {
+        if (valid) {
+          const data = {
+            username: this.ruleForm.username,
+            email: this.ruleForm.email,
+            displayName: this.ruleForm.displayName,
+            phone: this.ruleForm.phone,
+          };
+          this.$store
+            .dispatch("profile/updateUserAccount", {
+              data: data,
+              id: this.currentUserDetails.id,
+            })
+            .then(() => {
+              ElNotification({
+                title: "success",
+                message: "Data has been updated!",
+                type: "success",
+              });
+              this.$store.dispatch(
+                "profile/getUserDetails",
+                this.currentUserDetails.id
+              );
+            });
+        }
+      });
+    },
+  },
+  created() {
+    this.ruleForm.username = this.currentUserDetails.username;
+    this.ruleForm.displayName = this.currentUserDetails.displayName;
+    this.ruleForm.email = this.currentUserDetails.email;
+    this.ruleForm.phone = this.currentUserDetails.phone;
   },
 };
 </script>

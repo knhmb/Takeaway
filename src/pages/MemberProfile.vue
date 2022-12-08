@@ -8,7 +8,8 @@
               <div class="avatar">
                 <img src="../assets/navbar-profile-on.png" alt="" />
               </div>
-              <p class="profile-name">Tai Man</p>
+              <!-- <p class="profile-name">Tai Man</p> -->
+              <p class="profile-name">{{ currentUserDetails.displayName }}</p>
             </div>
             <div class="menu">
               <div
@@ -91,6 +92,11 @@ export default {
     return {
       dialogVisible: false,
     };
+  },
+  computed: {
+    currentUserDetails() {
+      return this.$store.getters["auth/currentUserDetails"];
+    },
   },
   methods: {
     navigate(path) {

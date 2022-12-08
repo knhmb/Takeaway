@@ -78,6 +78,7 @@ export default {
     },
     navigate(path) {
       this.$router.push(path);
+      this.isMenuDisplayed = false;
     },
   },
 };

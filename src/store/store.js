@@ -5,8 +5,13 @@ import mutations from "./mutations";
 import actions from "./actions";
 import authModule from "./modules/auth";
 import dashboardModule from "./modules/dashboard";
+import profileModule from "./modules/profile";
+
+import createPersistedState from "vuex-persistedstate";
 
 const store = createStore({
+  plugins: [createPersistedState()],
+
   state() {
     return {
       authOption: "login",
@@ -18,6 +23,7 @@ const store = createStore({
   modules: {
     auth: authModule,
     dashboard: dashboardModule,
+    profile: profileModule,
   },
 });
 
