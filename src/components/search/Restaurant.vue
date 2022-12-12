@@ -4,15 +4,27 @@
     <base-container>
       <h2>Restaurant</h2>
       <el-row :gutter="10">
-        <el-col v-for="item in 15" :key="item" :sm="12" :md="6">
+        <el-col v-for="item in restuarants" :key="item" :sm="12" :md="6">
           <div class="card">
             <div class="top">
               <img src="@/assets/restaurant.png" alt="" />
-              <img src="@/assets/bookmark-off.png" alt="" />
+              <img
+                v-if="item.isBookmarked"
+                @click="removeBookmark(item)"
+                src="@/assets/bookmarked.png"
+                alt=""
+              />
+              <img
+                v-else
+                @click="bookmark(item)"
+                src="@/assets/bookmark-off.png"
+                alt=""
+              />
+              <!-- <img @click="toggleBookmark(item)" :src="bookmarkImg" alt="" /> -->
             </div>
-            <p class="title">Restaurants name restaurants...</p>
+            <p class="title">{{ item.name }}</p>
             <p class="description">
-              Lorem ipsum dolor sit amet consectetur adipiscing elit...
+              {{ item.description }}
             </p>
           </div>
         </el-col>
@@ -20,6 +32,70 @@
     </base-container>
   </div>
 </template>
+
+<script>
+import { ElNotification } from "element-plus";
+export default {
+  data() {
+    return {
+      bookmarkImg: require("@/assets/bookmark-off.png"),
+    };
+  },
+  computed: {
+    restuarants() {
+      return this.$store.getters["dashboard/restuarants"];
+    },
+    isLoggedIn() {
+      return this.$store.getters["auth/isLoggedIn"];
+    },
+  },
+  methods: {
+    bookmark(item) {
+      if (!this.isLoggedIn) {
+        ElNotification({
+          title: "Error",
+          message: "Please Login First!",
+          type: "error",
+        });
+        return;
+      }
+      this.$store
+        .dispatch("auth/checkAccessToken")
+        .then(() => {
+          this.$store.dispatch("dashboard/bookmark", item.slug);
+        })
+        .catch(() => {
+          this.$store
+            .dispatch("auth/checkRefreshToken")
+            .then(() => {
+              this.$store.dispatch("dashboard/bookmark", item.slug);
+            })
+            .catch(() => {
+              ElNotification({
+                title: "Error",
+                message: "Token Expired! Please Login Again.",
+                type: "error",
+              });
+              this.$store.dispatch("auth/logout");
+              this.$router.replace("/");
+            });
+        });
+      item.isBookmarked = true;
+    },
+    removeBookmark(item) {
+      if (!this.isLoggedIn) {
+        ElNotification({
+          title: "Error",
+          message: "Please Login First!",
+          type: "error",
+        });
+        return;
+      }
+      item.isBookmarked = false;
+    },
+  },
+};
+</script>
 
 <style scoped>
 .restaurant h2 {
@@ -54,6 +130,10 @@
 
 .restaurant .card .top img {
   width: 1rem;
+}
+
+.restaurant .card .top img:last-of-type {
+  cursor: pointer;
 }
 
 .restaurant .card p.title {

@@ -2,8 +2,17 @@
 <template>
   <div class="map">
     <h3>Add a new address</h3>
+    <GMapAutocomplete @place_changed="setPlace" />
 
-    <GoogleMap
+    <GMapMap
+      :center="center"
+      :zoom="7"
+      map-type-id="terrain"
+      style="width: 100vw; height: 900px"
+    >
+    </GMapMap>
+
+    <!-- <GoogleMap
       :draggable="true"
       @dragend="dummy"
       ref="mapRef"
@@ -13,17 +22,17 @@
       :zoom="15"
     >
       <Marker :options="{ position: center }" />
-    </GoogleMap>
+    </GoogleMap> -->
   </div>
 </template>
 
 <script>
-import { GoogleMap, Marker } from "vue3-google-map";
+// import { GoogleMap, Marker } from "vue3-google-map";
 
 export default {
   components: {
-    GoogleMap,
-    Marker,
+    // GoogleMap,
+    // Marker,
   },
   data() {
     return {
@@ -41,22 +50,36 @@ export default {
         lat: 10,
         lng: 10,
       },
+      cuurentPlace: null,
     };
   },
   methods: {
     dummy(location) {
       console.log(location);
     },
+    setPlace(place) {
+      this.currentPlace = place;
+    },
+    geolocate() {
+      navigator.geolocation.getCurrentPosition((position) => {
+        this.center = {
+          lat: position.coords.latitude,
+          lng: position.coords.longitude,
+        };
+      });
+    },
   },
-  created() {
-    this.$getLocation({})
-      .then((coordinates) => {
-        console.log(coordinates);
-        this.coordinates = coordinates;
-      })
-      .catch((err) => alert(err));
-  },
+  // created() {
+  //   this.$getLocation({})
+  //     .then((coordinates) => {
+  //       console.log(coordinates);
+  //       this.coordinates = coordinates;
+  //     })
+  //     .catch((err) => alert(err));
+  // },
   mounted() {
+    this.geolocate();
+
     console.log(this.$refs.mapRef);
     // this.$refs.mapRef.$mapPromise.then((map) => (this.map = map));
   },
@@ -72,5 +95,11 @@ export default {
   line-height: 24px;
   letter-spacing: -0.02em;
   color: #141414;
+}
+
+.map :deep(.vue-map) {
+  width: 100% !important;
+  height: 600px !important;
+  margin: 1rem 0;
 }
 </style>

@@ -2,8 +2,9 @@
   <div class="carousel">
     <base-container>
       <carousel :breakpoints="breakpoints">
-        <slide v-for="slide in 5" :key="slide">
-          <img src="../../assets/banner.png" alt="" />
+        <slide v-for="slide in banners" :key="slide">
+          <img :src="slide.thumbnail" alt="" />
+          <!-- <img src="../../assets/banner.png" alt="" /> -->
         </slide>
 
         <template #addons>
@@ -44,6 +45,14 @@ export default {
         },
       },
     };
+  },
+  computed: {
+    banners() {
+      return this.$store.getters["dashboard/banners"];
+    },
+  },
+  created() {
+    this.$store.dispatch("dashboard/getBanners");
   },
 };
 </script>

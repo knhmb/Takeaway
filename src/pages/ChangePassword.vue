@@ -2,18 +2,27 @@
   <section class="change-password">
     <base-card>
       <h3>Change password</h3>
-      <el-form :model="ruleForm" label-position="top">
-        <el-form-item label="Old password">
-          <el-input v-model="ruleForm.oldPassword"></el-input>
+      <el-form
+        hide-required-asterisk
+        :model="ruleForm"
+        :rules="rules"
+        ref="ruleFormRef"
+        label-position="top"
+      >
+        <el-form-item prop="oldPassword" label="Old password">
+          <el-input type="password" v-model="ruleForm.oldPassword"></el-input>
         </el-form-item>
-        <el-form-item label="New password">
-          <el-input v-model="ruleForm.newPassword"></el-input>
+        <el-form-item prop="newPassword" label="New password">
+          <el-input type="password" v-model="ruleForm.newPassword"></el-input>
         </el-form-item>
-        <el-form-item label="Confirm new password">
-          <el-input v-model="ruleForm.confirmNewPassword"></el-input>
+        <el-form-item prop="confirmNewPassword" label="Confirm new password">
+          <el-input
+            type="password"
+            v-model="ruleForm.confirmNewPassword"
+          ></el-input>
         </el-form-item>
         <el-form-item>
-          <el-button disabled>Save</el-button>
+          <el-button @click="changePassword">Save</el-button>
         </el-form-item>
       </el-form>
     </base-card>
@@ -21,16 +30,136 @@
 </template>
   
   <script>
+import { ElNotification } from "element-plus";
 export default {
   data() {
+    const validatePass = (rule, value, callback) => {
+      if (value === "") {
+        callback(new Error("Enter password!"));
+      } else {
+        if (this.ruleForm.confirmNewPassword !== "") {
+          if (!this.$refs.ruleFormRef) return;
+          this.$refs.ruleFormRef.validateField(
+            "confirmNewPassword",
+            () => null
+          );
+        }
+        callback();
+      }
+    };
+    const validateConfirmPass = (rule, value, callback) => {
+      if (value === "") {
+        callback(new Error("Please enter the password again."));
+      } else if (value !== this.ruleForm.newPassword) {
+        callback(new Error("Passwords do not match!"));
+      } else {
+        callback();
+      }
+    };
+
     return {
       ruleForm: {
-        username: "chantaiman1234",
-        displayName: "Tai Man",
-        email: "chantaiman@email.com",
-        phone: "98761234",
+        oldPassword: "",
+        newPassword: "",
+        confirmNewPassword: "",
+      },
+      rules: {
+        oldPassword: [
+          {
+            required: true,
+            message: "Old password is required!",
+            trigger: "blur",
+          },
+        ],
+        newPassword: [{ validator: validatePass, trigger: "blur" }],
+        confirmNewPassword: [
+          { validator: validateConfirmPass, trigger: "blur" },
+        ],
       },
     };
+  },
+  computed: {
+    currentUserDetails() {
+      return this.$store.getters["auth/currentUserDetails"];
+    },
+  },
+  methods: {
+    changePassword() {
+      this.$refs.ruleFormRef.validate((valid) => {
+        // if (valid) {
+        //   const data = {
+        //     password: this.ruleForm.newPassword,
+        //     password2: this.ruleForm.confirmNewPassword
+        //   }
+        //   this.$store.dispatch('auth/checkAccessToken').then(() => {
+        //     this.$store.dispatch('profile/updateUserAccount', {data: data, id: this.currentUserDetails.id})
+        //   })
+        // }
+        if (valid) {
+          const data = {
+            password: this.ruleForm.newPassword,
+            password2: this.ruleForm.confirmNewPassword,
+          };
+          this.$store
+            .dispatch("auth/checkAccessToken")
+            .then(() => {
+              this.$store
+                .dispatch("profile/updateUserAccount", {
+                  data: data,
+                  id: this.currentUserDetails.id,
+                })
+                .then(() => {
+                  ElNotification({
+                    title: "Success",
+                    message: "Password has been changed!",
+                    type: "success",
+                  });
+                  this.$refs.ruleFormRef.resetFields();
+                });
+            })
+            .catch(() => {
+              this.$store
+                .dispatch("auth/checkRefreshToken")
+                .then(() => {
+                  this.$store
+                    .dispatch("profile/updateUserAccount", {
+                      data: data,
+                      id: this.currentUserDetails.id,
+                    })
+                    .then(() => {
+                      ElNotification({
+                        title: "Success",
+                        message: "Password has been changed!",
+                        type: "success",
+                      });
+                      this.$refs.ruleFormRef.resetFields();
+                    });
+                })
+                .catch(() => {
+                  ElNotification({
+                    title: "Error",
+                    message: "Token Expired! Please Login Again.",
+                    type: "error",
+                  });
+                  this.$store.dispatch("auth/logout");
+                });
+            });
+          // this.$store
+          //   .dispatch("profile/updateUserAccount", {
+          //     data: data,
+          //     id: this.currentUserDetails.id,
+          //   })
+          //   .then(() => {
+          //     ElNotification({
+          //       title: "Success",
+          //       message: "Password has been changed!",
+          //       type: "success",
+          //     });
+          //     this.$refs.ruleFormRef.resetFields();
+          //   });
+        }
+      });
+    },
   },
 };
 </script>

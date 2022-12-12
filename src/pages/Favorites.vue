@@ -4,15 +4,23 @@
     <base-card>
       <h3>Favorites</h3>
       <el-row :gutter="15">
-        <el-col v-for="item in 11" :key="item" :span="12">
+        <el-col
+          v-for="item in bookmarks.resources.restaurants"
+          :key="item"
+          :span="12"
+        >
           <div class="inner-card">
             <div class="top">
               <img src="../assets/restaurant.png" alt="" />
-              <img src="../assets/bookmark-on.png" alt="" />
+              <img
+                @click="removeBookmark(item.slug)"
+                src="../assets/bookmark-on.png"
+                alt=""
+              />
             </div>
-            <p class="name">Restaurants name restaurants...</p>
+            <p class="name">{{ item.name }}</p>
             <p class="description">
-              Lorem ipsum dolor sit amet consectetur adipiscing elit...
+              {{ item.description }}
             </p>
           </div>
         </el-col>
@@ -20,6 +28,70 @@
     </base-card>
   </section>
 </template>
+
+<script>
+import { ElNotification } from "element-plus";
+export default {
+  computed: {
+    bookmarks() {
+      return this.$store.getters["profile/bookmarks"];
+    },
+  },
+  methods: {
+    removeBookmark(slug) {
+      this.$store
+        .dispatch("auth/checkAccessToken")
+        .then(() => {
+          this.$store.dispatch("profile/removeBookmark", slug).then(() => {
+            this.$store.dispatch("profile/getBookmarks");
+          });
+        })
+        .catch(() => {
+          this.$store
+            .dispatch("auth/checkRefreshToken")
+            .then(() => {
+              this.$store.dispatch("profile/removeBookmark", slug).then(() => {
+                this.$store.dispatch("profile/getBookmarks");
+              });
+            })
+            .catch(() => {
+              ElNotification({
+                title: "Error",
+                message: "Token Expired! Please Login again.",
+                type: "error",
+              });
+              this.$store.dispatch("logout").then(() => {
+                this.$router.replace("/");
+              });
+            });
+        });
+    },
+  },
+  created() {
+    this.$store
+      .dispatch("auth/checkAccessToken")
+      .then(() => {
+        this.$store.dispatch("profile/getBookmarks");
+      })
+      .catch(() => {
+        this.$store
+          .dispatch("auth/checkRefreshToken")
+          .then(() => {
+            this.$store.dispatch("profile/getBookmarks");
+          })
+          .catch(() => {
+            ElNotification({
+              title: "Error",
+              message: "Token Expired! Please Login again.",
+              type: "error",
+            });
+            this.$store.dispatch("logout");
+            this.$router.replace("/");
+          });
+      });
+  },
+};
+</script>
 
 <style scoped>
 .favorites h3 {
@@ -52,6 +124,10 @@
 
 .favorites .inner-card img {
   width: 1.3rem;
+}
+
+.favorites .inner-card img:last-of-type {
+  cursor: pointer;
 }
 
 .favorites .inner-card p.name {

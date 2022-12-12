@@ -63,6 +63,28 @@ export default {
     },
   },
   methods: {
+    checkAccessToken() {
+      this.$store
+        .dispatch("auth/checkAccessToken")
+        .then(() => {
+          this.updateInfo();
+        })
+        .catch(() => {
+          this.$store
+            .dispatch("auth/checkRefreshToken")
+            .then(() => {
+              this.updateInfo();
+            })
+            .catch(() => {
+              ElNotification({
+                title: "Error",
+                message: "Token Expired! Please Login Again.",
+                type: "error",
+              });
+              this.$store.dispatch("auth/logout");
+            });
+        });
+    },
     updateInfo() {
       this.$refs.ruleFormRef.validate((valid) => {
         if (valid) {

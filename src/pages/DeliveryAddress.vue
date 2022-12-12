@@ -3,7 +3,7 @@
     <base-card>
       <h3>Delivery address</h3>
       <el-row :gutter="15">
-        <el-col v-for="item in info" :key="item" :span="12">
+        <el-col v-for="item in addresses" :key="item" :span="12">
           <div class="inner-card">
             <div class="top">
               <p>Address name</p>
@@ -33,7 +33,9 @@
 
 <script>
 import MapsDialog from "@/components/delivery-address/MapsDialog.vue";
+import { ElNotification } from "element-plus";
 export default {
+  components: { MapsDialog },
   data() {
     return {
       dialogVisible: false,
@@ -53,12 +55,38 @@ export default {
       ],
     };
   },
+  compted: {
+    addresses() {
+      return this.$store.getters["profile/addresses"];
+    },
+  },
   methods: {
     openMore(item) {
       item.isVisible = !item.isVisible;
     },
   },
-  components: { MapsDialog },
+  created() {
+    this.$store
+      .dispatch("auth/checkAccessToken")
+      .then(() => {
+        this.$store.dispatch("profile/getAddresses");
+      })
+      .catch(() => {
+        this.$store
+          .dispatch("auth/checkRefreshToken")
+          .then(() => {
+            this.$store.dispatch("profile/getAddresses");
+          })
+          .catch(() => {
+            ElNotification({
+              title: "Error",
+              message: "Token Expired! Please Login Again!",
+              type: "Error",
+            });
+            this.$store.dispatch("auth/logout");
+          });
+      });
+  },
 };
 </script>
 

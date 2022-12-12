@@ -15,7 +15,7 @@
             >Sign in</el-button
           >
           <div v-else class="login-content">
-            <div class="box">
+            <div class="box" @click="$router.push('/cart')">
               <img src="../../assets/navbar-cart-off.png" alt="" />
             </div>
             <div class="box" @click="toggleMenu">
@@ -52,6 +52,7 @@
 <script>
 import { Search } from "@element-plus/icons-vue";
 import AuthDialog from "../AuthDialog.vue";
+import { ElNotification } from "element-plus";
 
 export default {
   components: { AuthDialog },
@@ -72,9 +73,32 @@ export default {
       this.isMenuDisplayed = !this.isMenuDisplayed;
     },
     logout() {
-      this.$store.dispatch("auth/logout").then(() => {
-        this.$router.replace("/");
-      });
+      this.$store
+        .dispatch("auth/checkAccessToken")
+        .then(() => {
+          this.$store.dispatch("auth/logout").then(() => {
+            this.$router.replace("/");
+          });
+        })
+        .catch(() => {
+          this.$store
+            .dispatch("auth/checkRefreshToken")
+            .then(() => {
+              this.$store.dispatch("auth/logout").then(() => {
+                this.$router.replace("/");
+              });
+            })
+            .catch(() => {
+              ElNotification({
+                title: "Error",
+                message: "Token Expired! Please Login Again.",
+                type: "error",
+              });
+              this.$store.dispatch("auth/logout").then(() => {
+                this.$router.replace("/");
+              });
+            });
+        });
     },
     navigate(path) {
       this.$router.push(path);

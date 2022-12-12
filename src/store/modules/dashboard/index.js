@@ -7,6 +7,8 @@ export default {
   state() {
     return {
       products: [],
+      banners: [],
+      restuarants: [],
     };
   },
   getters,
