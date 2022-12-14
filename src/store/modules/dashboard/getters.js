@@ -11,4 +11,7 @@ export default {
   restaurantDetails(state) {
     return state.restaurantDetails;
   },
+  productDetails(state) {
+    return state.productDetails;
+  },
 };

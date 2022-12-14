@@ -1,25 +1,27 @@
 <template>
   <div class="right-section">
     <div class="card">
-      <h2>Papadam Indian Authentic</h2>
+      <h2>{{ restaurantDetails.name }}</h2>
       <div class="top">
         <span>Delivery time</span>
         <span>ASAP (40min)</span>
       </div>
-      <div v-for="item in 3" :key="item" class="items">
-        <div class="left">
-          <el-select v-model="value"></el-select>
-          <p>Product name</p>
+      <template v-if="products.length > 0">
+        <div v-for="item in products" :key="item" class="items">
+          <div class="left">
+            <el-select v-model="item.quantity"></el-select>
+            <p>{{ item.name }}</p>
+          </div>
+          <div class="right">
+            <p class="discount">HK$ {{ item.price }}</p>
+            <p class="price">HK$ {{ item.price - item.discount }}</p>
+          </div>
         </div>
-        <div class="right">
-          <p class="discount">HK$ 97.0</p>
-          <p class="price">HK$ 58.0</p>
+        <div class="subtotal-content">
+          <p class="subtotal">Subtotal</p>
+          <p class="subtotal-price">HK$ {{ sum }}</p>
         </div>
-      </div>
-      <div class="subtotal-content">
-        <p class="subtotal">Subtotal</p>
-        <p class="subtotal-price">HK$ 174.0</p>
-      </div>
+      </template>
       <el-button>Add to cart</el-button>
     </div>
   </div>
@@ -27,10 +29,35 @@
 
 <script>
 export default {
+  props: ["products"],
   data() {
     return {
       value: 1,
     };
+  },
+  computed: {
+    restaurantDetails() {
+      return this.$store.getters["dashboard/restaurantDetails"];
+    },
+    sum() {
+      let sum = 0;
+
+      this.products.forEach((item) => {
+        sum += item.price;
+      });
+
+      console.log(sum);
+      return sum;
+    },
+    quantity() {
+      const counts = {};
+      // const sampleArray = ['a', 'a', 'b', 'c'];
+      this.products.forEach(function (x) {
+        counts[x] = (counts[x] || 0) + 1;
+      });
+      console.log(counts);
+      return counts;
+    },
   },
 };
 </script>
@@ -116,6 +143,11 @@ export default {
   display: inline;
   vertical-align: super;
   margin-left: 0.3rem;
+}
+
+.right-section .card .items .right {
+  width: 50%;
+  text-align: end;
 }
 
 .right-section .card .items .right p {

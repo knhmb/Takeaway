@@ -11,4 +11,7 @@ export default {
   SET_RESTAURANT_DETAILS(state, payload) {
     state.restaurantDetails = payload;
   },
+  SET_PRODUCT_DETAILS(state, payload) {
+    state.productDetails = payload;
+  },
 };

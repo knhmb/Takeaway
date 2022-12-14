@@ -5,7 +5,7 @@
       <h2>Product</h2>
       <el-row :gutter="10">
         <el-col v-for="item in products" :key="item" :sm="12" :md="6">
-          <div class="card" @click="addToCart(item)">
+          <div class="card" @click="selectProduct(item)">
             <img src="@/assets/cuisine.png" alt="" />
             <p class="title">{{ item.name }}</p>
             <span>HK$ {{ item.price }}</span>
@@ -26,8 +26,12 @@ export default {
     },
   },
   methods: {
-    addToCart(item) {
-      this.$store.dispatch("dashboard/addToCart", item.slug);
+    selectProduct(item) {
+      this.$store
+        .dispatch("dashboard/getProductDetails", item.slug)
+        .then(() => {
+          this.$router.push("/restaurant");
+        });
     },
   },
   created() {
@@ -56,6 +60,7 @@ export default {
   background: #ffffff;
   border-radius: 8px;
   padding: 0.5rem;
+  cursor: pointer;
 }
 
 .product img {

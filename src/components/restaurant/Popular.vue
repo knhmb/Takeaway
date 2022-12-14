@@ -3,12 +3,17 @@
   <div class="popular-items">
     <h2>Popular</h2>
     <div class="card">
-      <div class="single-item" v-for="item in products" :key="item">
+      <div
+        class="single-item"
+        @click="addProduct(item)"
+        v-for="item in products"
+        :key="item"
+      >
         <div class="top">
           <p class="name">{{ item.name }}</p>
           <p v-if="item.isHavePill">3</p>
         </div>
-        <span class="price">HK$ {{ item.discount }}</span>
+        <span class="price">HK$ {{ item.price - item.discount }}</span>
         <span class="discount">HK$ {{ item.price }}</span>
       </div>
     </div>
@@ -55,6 +60,12 @@ export default {
       return this.$store.getters["dashboard/products"];
     },
   },
+  methods: {
+    addProduct(item) {
+      console.log(item);
+      this.$emit("addProduct", item);
+    },
+  },
 };
 </script>
 
@@ -84,6 +95,7 @@ export default {
   border-bottom: 1px solid #e6e6e6;
   padding-bottom: 0.5rem;
   margin-bottom: 1rem;
+  cursor: pointer;
 }
 
 .popular-items .card .top {
