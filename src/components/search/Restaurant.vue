@@ -5,7 +5,7 @@
       <h2>Restaurant</h2>
       <el-row :gutter="10">
         <el-col v-for="item in restuarants" :key="item" :sm="12" :md="6">
-          <div class="card">
+          <div class="card" @click="selectRestaurant(item)">
             <div class="top">
               <img src="@/assets/restaurant.png" alt="" />
               <img
@@ -50,6 +50,13 @@ export default {
     },
   },
   methods: {
+    selectRestaurant(item) {
+      this.$store
+        .dispatch("dashboard/getRestaurantDetails", item.slug)
+        .then(() => {
+          this.$router.push("/restaurant");
+        });
+    },
     bookmark(item) {
       if (!this.isLoggedIn) {
         ElNotification({
@@ -117,6 +124,7 @@ export default {
   background: #ffffff;
   border-radius: 8px;
   padding: 0.5rem;
+  cursor: pointer;
   /* width: 12rem; */
   /* width: 100%; */
 }

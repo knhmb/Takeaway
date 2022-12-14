@@ -8,4 +8,7 @@ export default {
   SET_RESTUARANTS(state, payload) {
     state.restuarants = payload;
   },
+  SET_RESTAURANT_DETAILS(state, payload) {
+    state.restaurantDetails = payload;
+  },
 };

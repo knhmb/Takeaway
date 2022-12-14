@@ -5,7 +5,7 @@
       <h2>Product</h2>
       <el-row :gutter="10">
         <el-col v-for="item in products" :key="item" :sm="12" :md="6">
-          <div class="card">
+          <div class="card" @click="addToCart(item)">
             <img src="@/assets/cuisine.png" alt="" />
             <p class="title">{{ item.name }}</p>
             <span>HK$ {{ item.price }}</span>
@@ -23,6 +23,11 @@ export default {
   computed: {
     products() {
       return this.$store.getters["dashboard/products"];
+    },
+  },
+  methods: {
+    addToCart(item) {
+      this.$store.dispatch("dashboard/addToCart", item.slug);
     },
   },
   created() {

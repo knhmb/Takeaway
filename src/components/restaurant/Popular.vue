@@ -3,13 +3,13 @@
   <div class="popular-items">
     <h2>Popular</h2>
     <div class="card">
-      <div class="single-item" v-for="item in info" :key="item">
+      <div class="single-item" v-for="item in products" :key="item">
         <div class="top">
-          <p class="name">Product name</p>
+          <p class="name">{{ item.name }}</p>
           <p v-if="item.isHavePill">3</p>
         </div>
-        <span class="price">HK$ 58.0</span>
-        <span class="discount">HK$ 97.0</span>
+        <span class="price">HK$ {{ item.discount }}</span>
+        <span class="discount">HK$ {{ item.price }}</span>
       </div>
     </div>
   </div>
@@ -49,6 +49,11 @@ export default {
         },
       ],
     };
+  },
+  computed: {
+    products() {
+      return this.$store.getters["dashboard/products"];
+    },
   },
 };
 </script>

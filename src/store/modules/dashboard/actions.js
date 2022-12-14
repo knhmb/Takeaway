@@ -33,4 +33,8 @@ export default {
     );
     console.log(response);
   },
+  async getRestaurantDetails(context, payload) {
+    const response = await axios.get(`/api/v1/accounts/restaurants/${payload}`);
+    context.commit("SET_RESTAURANT_DETAILS", response.data.item);
+  },
 };

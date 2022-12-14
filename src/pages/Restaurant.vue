@@ -6,10 +6,9 @@
         <el-col :sm="24" :lg="16">
           <div class="card">
             <div class="top">
-              <h2>Papadam Indian Authentic</h2>
+              <h2>{{ restaurantDetails.name }}</h2>
               <p class="description">
-                Restaurant description : Lorem ipsum dolor sit amet, consectetur
-                adipiscing elit.
+                {{ restaurantDetails.description }}
               </p>
             </div>
             <div class="content">
@@ -24,7 +23,7 @@
                 <img src="../assets/opening-hours.png" alt="" />
                 <div class="text">
                   <p>Opening hours</p>
-                  <p>Monday - Sunday 08:30 - 21:00</p>
+                  <p>{{ restaurantDetails.openingHours }}</p>
                 </div>
               </div>
               <div class="single-content">
@@ -32,8 +31,7 @@
                 <div class="text">
                   <p>Address</p>
                   <p>
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit
-                    Fusce vulputate gravida est
+                    {{ restaurantDetails.address }}
                   </p>
                 </div>
               </div>
@@ -54,6 +52,11 @@ import Popular from "@/components/restaurant/Popular.vue";
 import RightSection from "@/components/restaurant/RightSection.vue";
 export default {
   components: { Popular, RightSection },
+  computed: {
+    restaurantDetails() {
+      return this.$store.getters["dashboard/restaurantDetails"];
+    },
+  },
 };
 </script>
 

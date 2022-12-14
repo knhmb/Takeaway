@@ -92,6 +92,7 @@ export default {
 
           this.$store.dispatch("auth/login", data).then(() => {
             this.$emit("closeDialog");
+            this.$refs.ruleFormRef.resetFields();
           });
         }
       });

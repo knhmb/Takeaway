@@ -8,4 +8,7 @@ export default {
   restuarants(state) {
     return state.restuarants;
   },
+  restaurantDetails(state) {
+    return state.restaurantDetails;
+  },
 };

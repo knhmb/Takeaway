@@ -10,6 +10,7 @@
           ></el-input>
           <img src="../../assets/filter.png" alt="" />
         </el-col>
+
         <el-col :span="12">
           <el-button v-if="!isLoggedIn" @click="dialogVisible = true"
             >Sign in</el-button
@@ -67,6 +68,9 @@ export default {
     isLoggedIn() {
       return this.$store.getters["auth/isLoggedIn"];
     },
+    // logged() {
+    //   return sessionStorage.getItem("accessToken");
+    // },
   },
   methods: {
     toggleMenu() {

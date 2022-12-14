@@ -9,6 +9,7 @@ export default {
       products: [],
       banners: [],
       restuarants: [],
+      restaurantDetails: [],
     };
   },
   getters,
