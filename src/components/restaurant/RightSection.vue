@@ -22,12 +22,13 @@
           <p class="subtotal-price">HK$ {{ sum }}</p>
         </div>
       </template>
-      <el-button>Add to cart</el-button>
+      <el-button @click="addToCart()">Add to cart</el-button>
     </div>
   </div>
 </template>
 
 <script>
+import { ElNotification } from "element-plus";
 export default {
   props: ["products"],
   data() {
@@ -57,6 +58,63 @@ export default {
       });
       console.log(counts);
       return counts;
+    },
+  },
+  methods: {
+    addToCart() {
+      console.log(this.products);
+      let finalArr = [];
+      this.products.forEach((product) => {
+        finalArr.push({
+          product: product.slug,
+          quantity: product.quantity,
+        });
+      });
+      console.log(finalArr);
+      const isLoggedIn = sessionStorage.getItem("accessToken");
+      if (!isLoggedIn) {
+        ElNotification({
+          title: "Error",
+          message: "Please Login First!",
+          type: "error",
+        });
+        return;
+      }
+      this.$store
+        .dispatch("auth/checkAccessToken")
+        .then(() => {
+          this.$store.dispatch("cart/addToCart", finalArr).then(() => {
+            ElNotification({
+              title: "Success",
+              message: "Items Added To Cart!",
+              type: "success",
+            });
+            this.$router.push("/cart");
+          });
+        })
+        .catch(() => {
+          this.$store
+            .dispatch("auth/checkRefreshToken")
+            .then(() => {
+              this.$store.dispatch("cart/addToCart", finalArr).then(() => {
+                ElNotification({
+                  title: "Success",
+                  message: "Items Added To Cart!",
+                  type: "success",
+                });
+                this.$router.push("/cart");
+              });
+            })
+            .catch(() => {
+              ElNotification({
+                title: "Error",
+                message: "Token Expired! Please Login Again.",
+                type: "error",
+              });
+              this.$store.dispatch("auth/logout");
+              this.$router.replace("/");
+            });
+        });
     },
   },
 };

@@ -3,15 +3,15 @@
     <img @click="changeAuth" src="../assets/back.png" alt="" />
     <h2>Reset password</h2>
     <p class="note">Enter your username and email to reset password</p>
-    <el-form>
-      <el-form-item>
-        <el-input v-model="username" placeholder="Username"></el-input>
+    <el-form :rules="rules" :model="ruleForm" ref="ruleFormRef">
+      <el-form-item prop="username">
+        <el-input v-model="ruleForm.username" placeholder="Username"></el-input>
+      </el-form-item>
+      <el-form-item prop="email">
+        <el-input v-model="ruleForm.email" placeholder="Email"></el-input>
       </el-form-item>
       <el-form-item>
-        <el-input v-model="email" placeholder="Email"></el-input>
-      </el-form-item>
-      <el-form-item>
-        <el-button>Continue</el-button>
+        <el-button @click="validate">Continue</el-button>
       </el-form-item>
     </el-form>
   </div>
@@ -21,13 +21,39 @@
 export default {
   data() {
     return {
-      username: "",
-      email: "",
+      ruleForm: {
+        username: "",
+        email: "",
+      },
+      rules: {
+        username: [
+          { required: true, message: "Username is required!", trigger: "blur" },
+        ],
+        email: [
+          { required: true, message: "Email is required!", trigger: "blur" },
+          {
+            type: "email",
+            message: "Please enter a valid email!",
+            trigger: ["change", "blur"],
+          },
+        ],
+      },
     };
   },
   methods: {
     changeAuth() {
       this.$store.commit("CHANGE_AUTH_OPTION", "login");
+    },
+    validate() {
+      this.$refs.ruleFormRef.validate((valid) => {
+        if (valid) {
+          this.$store
+            .dispatch("auth/forgotPassword", this.ruleForm)
+            .then(() => {
+              this.$refs.ruleFormRef.resetFields();
+            });
+        }
+      });
     },
   },
 };

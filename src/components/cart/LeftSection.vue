@@ -1,15 +1,15 @@
 <template>
   <div class="cart-left-section">
     <div class="card">
-      <h2>Papadam Indian Authentic</h2>
+      <h2>{{ restaurantDetails.name }}</h2>
       <div class="top">
         <span>Delivery time</span>
         <span>ASAP (40min)</span>
       </div>
-      <div v-for="item in 3" :key="item" class="items">
+      <div v-for="item in cart.products" :key="item" class="items">
         <div class="left">
-          <el-select v-model="value"></el-select>
-          <p>Product name</p>
+          <el-select v-model="item.quantity"></el-select>
+          <p>{{ item.product }}</p>
         </div>
         <div class="right">
           <p class="discount">HK$ 97.0</p>
@@ -33,6 +33,14 @@ export default {
     return {
       value: 1,
     };
+  },
+  computed: {
+    restaurantDetails() {
+      return this.$store.getters["dashboard/restaurantDetails"];
+    },
+    cart() {
+      return this.$store.getters["cart/cart"];
+    },
   },
 };
 </script>

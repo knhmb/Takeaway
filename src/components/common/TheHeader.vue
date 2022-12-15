@@ -8,7 +8,12 @@
             placeholder="Search Restaurant and Product"
             :prefix-icon="Search"
           ></el-input>
-          <img src="../../assets/filter.png" alt="" />
+          <img
+            style="cursor: pointer"
+            @click="$router.push('/search')"
+            src="../../assets/filter.png"
+            alt=""
+          />
         </el-col>
 
         <el-col :span="12">
@@ -68,9 +73,6 @@ export default {
     isLoggedIn() {
       return this.$store.getters["auth/isLoggedIn"];
     },
-    // logged() {
-    //   return sessionStorage.getItem("accessToken");
-    // },
   },
   methods: {
     toggleMenu() {

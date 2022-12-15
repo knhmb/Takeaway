@@ -18,8 +18,32 @@
 <script>
 import LeftSection from "@/components/cart/LeftSection.vue";
 import RightSection from "@/components/cart/RightSection.vue";
+import { ElNotification } from "element-plus";
 export default {
   components: { LeftSection, RightSection },
+  created() {
+    this.$store
+      .dispatch("auth/checkAccessToken")
+      .then(() => {
+        this.$store.dispatch("cart/getCart");
+      })
+      .catch(() => {
+        this.$store
+          .dispatch("auth/checkRefreshToken")
+          .then(() => {
+            this.$store.dispatch("cart/getCart");
+          })
+          .catch(() => {
+            ElNotification({
+              title: "Error",
+              message: "Token Expired! Please Login Again.",
+              type: "error",
+            });
+            this.$store.dispatch("auth/logout");
+            this.$router.replace("/");
+          });
+      });
+  },
 };
 </script>
 

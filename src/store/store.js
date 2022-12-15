@@ -6,6 +6,7 @@ import actions from "./actions";
 import authModule from "./modules/auth";
 import dashboardModule from "./modules/dashboard";
 import profileModule from "./modules/profile";
+import cartModule from "./modules/cart";
 
 import createPersistedState from "vuex-persistedstate";
 
@@ -24,6 +25,7 @@ const store = createStore({
     auth: authModule,
     dashboard: dashboardModule,
     profile: profileModule,
+    cart: cartModule,
   },
 });
 

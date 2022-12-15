@@ -55,4 +55,11 @@ export default {
     sessionStorage.removeItem("accessToken");
     sessionStorage.removeItem("refreshToken");
   },
+  async forgotPassword(_, payload) {
+    const response = await axios.post(
+      "/api/v1/accounts/forget-password",
+      payload
+    );
+    console.log(response);
+  },
 };
