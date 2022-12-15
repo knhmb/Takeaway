@@ -20,6 +20,6 @@ export default {
       },
     });
     console.log(response);
-    context.commit("SET_CART", response.data.item);
+    context.commit("SET_CART", response.data);
   },
 };

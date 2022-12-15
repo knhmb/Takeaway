@@ -2,11 +2,23 @@
   <div class="cart-right-section">
     <div class="card">
       <p class="subtotal">Subtotal</p>
-      <p class="price">HK$ 174.0</p>
-      <el-button>Select address and payment </el-button>
+      <p class="price">HK$ {{ cart.resources.subtotal }}</p>
+      <el-button @click="$router.push('/cart-2')"
+        >Select address and payment
+      </el-button>
     </div>
   </div>
 </template>
+
+<script>
+export default {
+  computed: {
+    cart() {
+      return this.$store.getters["cart/cart"];
+    },
+  },
+};
+</script>
 
 <style scoped>
 .cart-right-section .card {

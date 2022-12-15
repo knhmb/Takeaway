@@ -6,14 +6,14 @@
         <span>Delivery time</span>
         <span>ASAP (40min)</span>
       </div>
-      <div v-for="item in cart.products" :key="item" class="items">
+      <div v-for="item in cart.resources.products" :key="item" class="items">
         <div class="left">
           <el-select v-model="item.quantity"></el-select>
-          <p>{{ item.product }}</p>
+          <p>{{ item.name }}</p>
         </div>
         <div class="right">
-          <p class="discount">HK$ 97.0</p>
-          <p class="price">HK$ 58.0</p>
+          <p class="discount">HK$ {{ item.price }}</p>
+          <p class="price">HK$ {{ item.price - item.discount }}</p>
         </div>
       </div>
       <p class="add-more">Add more items</p>
@@ -21,7 +21,7 @@
     <div class="card">
       <div class="subtotal-content">
         <p class="subtotal">Subtotal</p>
-        <p class="subtotal-price">HK$ 174.0</p>
+        <p class="subtotal-price">HK$ {{ cart.resources.subtotal }}</p>
       </div>
     </div>
   </div>

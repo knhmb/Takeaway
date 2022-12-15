@@ -2,11 +2,26 @@
   <div class="cart-2-right-section">
     <div class="card">
       <p class="subtotal">Total</p>
-      <p class="price">HK$ 189.0</p>
+      <p class="price">
+        HK$ {{ cart.resources.subtotal + productDetails.deliveryFee }}
+      </p>
       <el-button>Checkout </el-button>
     </div>
   </div>
 </template>
+
+<script>
+export default {
+  computed: {
+    cart() {
+      return this.$store.getters["cart/cart"];
+    },
+    productDetails() {
+      return this.$store.getters["dashboard/productDetails"];
+    },
+  },
+};
+</script>
   
   <style scoped>
 .cart-2-right-section .card {

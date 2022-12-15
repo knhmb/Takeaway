@@ -40,6 +40,8 @@ export default {
   async getProductDetails(context, payload) {
     const response = await axios.get(`/api/v1/platform/products/${payload}`);
     context.commit("SET_PRODUCT_DETAILS", response.data.item);
+    context.dispatch("getRestaurantDetails", response.data.item.restaurant);
+    // console.log(context);
   },
   // async addToCart(_, payload) {
   //   const userToken = sessionStorage.getItem("accessToken");

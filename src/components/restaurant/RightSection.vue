@@ -4,7 +4,7 @@
       <h2>{{ restaurantDetails.name }}</h2>
       <div class="top">
         <span>Delivery time</span>
-        <span>ASAP (40min)</span>
+        <span>ASAP ({{ deliveryTime }}min)</span>
       </div>
       <template v-if="products.length > 0">
         <div v-for="item in products" :key="item" class="items">
@@ -40,6 +40,17 @@ export default {
     restaurantDetails() {
       return this.$store.getters["dashboard/restaurantDetails"];
     },
+    productDetails() {
+      return this.$store.getters["dashboard/productDetails"];
+    },
+    deliveryTime() {
+      return (
+        +this.productDetails.cookingTime +
+        +this.productDetails.courierAcceptanceResponseTime +
+        +this.productDetails.restaurantAcceptanceResponseTime
+      );
+    },
+
     sum() {
       let sum = 0;
 

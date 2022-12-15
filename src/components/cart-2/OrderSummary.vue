@@ -6,7 +6,18 @@
         <h2>Order summary</h2>
       </div>
       <div class="items">
-        <div class="single-item">
+        <div
+          v-for="item in cart.resources.products"
+          :key="item"
+          class="single-item"
+        >
+          <div class="left">
+            <span>{{ item.quantity }}x</span>
+            <p class="name">{{ item.name }}</p>
+          </div>
+          <p class="price">HK$ {{ item.price }}</p>
+        </div>
+        <!-- <div class="single-item">
           <div class="left">
             <span>1x</span>
             <p class="name">Product name</p>
@@ -19,34 +30,43 @@
             <p class="name">Product name</p>
           </div>
           <p class="price">HK$ 58.0</p>
-        </div>
-        <div class="single-item">
-          <div class="left">
-            <span>1x</span>
-            <p class="name">Product name</p>
-          </div>
-          <p class="price">HK$ 58.0</p>
-        </div>
+        </div> -->
       </div>
       <div class="items">
         <div class="single-item">
           <p class="subtotal">Subtotal</p>
-          <p class="subtotal">HK$ 174.0</p>
+          <p class="subtotal">HK$ {{ cart.resources.subtotal }}.0</p>
         </div>
         <div class="single-item">
           <p class="subtotal">Delivery fee</p>
-          <p class="subtotal">HK$ 15.0</p>
+
+          <p class="subtotal">HK$ {{ productDetails.deliveryFee }}</p>
         </div>
       </div>
       <div class="items">
         <div class="single-item">
           <p class="total">Total</p>
-          <p class="total">HK$ 189.0</p>
+          <p class="total">
+            HK$ {{ cart.resources.subtotal + productDetails.deliveryFee }}
+          </p>
         </div>
       </div>
     </div>
   </div>
 </template>
+
+<script>
+export default {
+  computed: {
+    cart() {
+      return this.$store.getters["cart/cart"];
+    },
+    productDetails() {
+      return this.$store.getters["dashboard/productDetails"];
+    },
+  },
+};
+</script>
 
 <style scoped>
 .order-summary {
