@@ -1,7 +1,7 @@
 <template>
   <div class="carousel">
     <base-container>
-      <carousel :breakpoints="breakpoints">
+      <carousel v-if="banners.length > 0" :breakpoints="breakpoints">
         <slide v-for="slide in banners" :key="slide">
           <img :src="slide.thumbnail" alt="" />
           <!-- <img src="../../assets/banner.png" alt="" /> -->

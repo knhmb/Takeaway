@@ -4,7 +4,7 @@
       <h2>{{ restaurantDetails.name }}</h2>
       <div class="top">
         <span>Delivery time</span>
-        <span>ASAP (40min)</span>
+        <span>ASAP ({{ cart.resources.deliveryTime }}min)</span>
       </div>
       <div v-for="item in cart.resources.products" :key="item" class="items">
         <div class="left">

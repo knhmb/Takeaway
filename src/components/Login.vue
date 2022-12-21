@@ -52,6 +52,8 @@
 </template>
 
 <script>
+import { ElNotification } from "element-plus";
+
 export default {
   data() {
     return {
@@ -90,10 +92,19 @@ export default {
             password: this.ruleForm.password,
           };
 
-          this.$store.dispatch("auth/login", data).then(() => {
-            this.$emit("closeDialog");
-            this.$refs.ruleFormRef.resetFields();
-          });
+          this.$store
+            .dispatch("auth/login", data)
+            .then(() => {
+              this.$emit("closeDialog");
+              this.$refs.ruleFormRef.resetFields();
+            })
+            .catch((err) => {
+              ElNotification({
+                title: "Error",
+                message: this.$t(err.response.data.message),
+                type: "error",
+              });
+            });
         }
       });
     },

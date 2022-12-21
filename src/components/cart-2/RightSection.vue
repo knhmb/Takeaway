@@ -5,12 +5,13 @@
       <p class="price">
         HK$ {{ cart.resources.subtotal + productDetails.deliveryFee }}
       </p>
-      <el-button>Checkout </el-button>
+      <el-button @click="checkout">Checkout </el-button>
     </div>
   </div>
 </template>
 
 <script>
+import { ElNotification } from "element-plus";
 export default {
   computed: {
     cart() {
@@ -18,6 +19,50 @@ export default {
     },
     productDetails() {
       return this.$store.getters["dashboard/productDetails"];
+    },
+  },
+  methods: {
+    checkout() {
+      console.log(this.cart.resources.products);
+      this.$store
+        .dispatch("auth/checkAccessToken")
+        .then(() => {
+          this.$store.dispatch(
+            "cart/stripePayment",
+            this.cart.resources.products
+          );
+          // .then(() => {
+          //   this.$store.dispatch("cart/getStripe", {
+          //     session: this.$route.query.success,
+          //     success: this.$route.query.success,
+          //   });
+          // });
+        })
+        .catch(() => {
+          this.$store
+            .dispatch("auth/checkRefreshToken")
+            .then(() => {
+              this.$store.dispatch(
+                "cart/stripePayment",
+                this.cart.resources.products
+              );
+              // .then(() => {
+              //   this.$store.dispatch("cart/getStripe", {
+              //     session: this.$route.query.success,
+              //     success: this.$route.query.success,
+              //   });
+              // });
+            })
+            .catch(() => {
+              ElNotification({
+                title: "Error",
+                message: "Token Expired! Please Login Again.",
+                type: "error",
+              });
+              this.$store.dispatch("auth/logout");
+              this.$router.replace("/");
+            });
+        });
     },
   },
 };

@@ -2,7 +2,8 @@
 <template>
   <div class="order-dialog">
     <el-dialog v-model="dialogVisible">
-      <div class="inner-box">
+      <p class="estimated-time" v-if="isFailed">Order Failed!</p>
+      <div v-if="!isFailed" class="inner-box">
         <p class="estimated-time">Estimated delivery time</p>
         <p class="time">11:30 - 11:45</p>
         <div class="slider">
@@ -10,7 +11,7 @@
         </div>
         <p class="food-picked">Your rider has picked up your food.</p>
       </div>
-      <div class="inner-box">
+      <div v-if="!isFailed" class="inner-box">
         <h3>Order details</h3>
         <div class="items">
           <div class="single-item">
@@ -72,12 +73,43 @@
   </div>
 </template>
 
+
 <script>
+import { ElNotification } from "element-plus";
 export default {
   data() {
     return {
+      isFailed: false,
       dialogVisible: true,
     };
+  },
+  mounted() {
+    if (this.$route.query.success === "false") {
+      this.isFailed = true;
+      this.$store
+        .dispatch("auth/checkAccessToken")
+        .then(() => {
+          this.$store.dispatch("cart/getOrder");
+        })
+        .catch(() => {
+          this.$store
+            .dispatch("auth/checkRefreshToken")
+            .then(() => {
+              this.$store.dispatch("cart/getOrder");
+            })
+            .catch(() => {
+              ElNotification({
+                title: "Error",
+                message: "Token Expired! Please Login Again.",
+                type: "error",
+              });
+              this.$store.dispatch("auth/logout");
+              this.$router.push("/");
+            });
+        });
+    } else {
+      this.isFailed = false;
+    }
   },
 };
 </script>
