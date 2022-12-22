@@ -2,11 +2,21 @@
   <section class="e-wallet">
     <base-card>
       <h3>E-Wallet</h3>
-      <p>HK$ 2498.00</p>
+      <p>HK$ {{ currentUserDetails.eWallet }}</p>
       <el-button>Top up</el-button>
     </base-card>
   </section>
 </template>
+
+<script>
+export default {
+  computed: {
+    currentUserDetails() {
+      return this.$store.getters["auth/currentUserDetails"];
+    },
+  },
+};
+</script>
 
 <style scoped>
 .e-wallet h3 {

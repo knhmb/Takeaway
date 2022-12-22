@@ -5,4 +5,7 @@ export default {
   SET_ORDERS(state, payload) {
     state.orders = payload;
   },
+  SET_PAYMENT_METHOD(state, payload) {
+    state.paymentMethod = payload;
+  },
 };

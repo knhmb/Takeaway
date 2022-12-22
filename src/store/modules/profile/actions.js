@@ -2,7 +2,7 @@ import axios from "axios";
 
 export default {
   async updateUserAccount(_, payload) {
-    const userToken = sessionStorage.getItem("accessToken");
+    const userToken = localStorage.getItem("accessToken");
 
     const response = await axios.put(
       `/api/v1/accounts/${payload.id}`,
@@ -16,7 +16,7 @@ export default {
     console.log(response);
   },
   async getUserDetails(context, payload) {
-    const userToken = sessionStorage.getItem("accessToken");
+    const userToken = localStorage.getItem("accessToken");
 
     const response = await axios.get(`/api/v1/accounts/${payload}`, {
       headers: {
@@ -26,7 +26,7 @@ export default {
     context.commit("auth/LOGIN", response.data.item, { root: true });
   },
   async getAddresses(context) {
-    const userToken = sessionStorage.getItem("accessToken");
+    const userToken = localStorage.getItem("accessToken");
 
     const response = await axios.get("/api/v1/accounts/addresses", {
       headers: {
@@ -36,7 +36,7 @@ export default {
     context.commit("SET_ADDRESSES", response.data.items);
   },
   async getBookmarks(context) {
-    const userToken = sessionStorage.getItem("accessToken");
+    const userToken = localStorage.getItem("accessToken");
 
     const response = await axios.get("/api/v1/accounts/favourites/@me", {
       headers: {
@@ -47,7 +47,7 @@ export default {
     context.commit("SET_BOOKMARKS", response.data);
   },
   async removeBookmark(_, payload) {
-    const userToken = sessionStorage.getItem("accessToken");
+    const userToken = localStorage.getItem("accessToken");
 
     const response = await axios.delete(
       `/api/v1/accounts/favourites/@me/restaurant/${payload}`,

@@ -12,18 +12,44 @@
 </template>
 
 <script>
+import { ElNotification } from "element-plus";
 import OrderConfirmation from "@/components/order/OrderConfirmation.vue";
 import Delivering from "../components/order/Delivering.vue";
 import PastOrders from "@/components/order/PastOrders.vue";
 import Dialog from "@/components/order/Dialog.vue";
 export default {
   components: { OrderConfirmation, Delivering, PastOrders, Dialog },
+  created() {
+    this.$store
+      .dispatch("auth/checkAccessToken")
+      .then(() => {
+        this.$store.dispatch("cart/getOrder");
+      })
+      .catch(() => {
+        this.$store
+          .dispatch("auth/checkRefreshToken")
+          .then(() => {
+            this.$store.dispatch("cart/getOrder");
+          })
+          .catch(() => {
+            ElNotification({
+              title: "Error",
+              message: "Token Expired! Please Login Again.",
+              type: "error",
+            });
+            this.$store.dispatch("auth/logout");
+            this.$router.push("/");
+          });
+      });
+  },
 };
 </script>
 
 <style scoped>
 .order {
   background: #f2f2f2;
+  height: 100vh;
+  overflow-y: hidden;
 }
 
 .order h2 {

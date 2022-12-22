@@ -82,7 +82,7 @@ export default {
         });
       });
       console.log(finalArr);
-      const isLoggedIn = sessionStorage.getItem("accessToken");
+      const isLoggedIn = localStorage.getItem("accessToken");
       if (!isLoggedIn) {
         ElNotification({
           title: "Error",

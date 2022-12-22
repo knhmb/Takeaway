@@ -8,6 +8,7 @@ export default {
     return {
       cart: [],
       orders: [],
+      paymentMethod: "",
     };
   },
   getters,

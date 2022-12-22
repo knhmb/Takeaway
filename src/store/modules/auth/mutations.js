@@ -5,6 +5,6 @@ export default {
   },
   LOGOUT(state) {
     state.currentUserDetails = [];
-    state.isLoggedIn = false;
+    state.isLoggedIn = null;
   },
 };

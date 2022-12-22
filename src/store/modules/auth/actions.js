@@ -13,11 +13,11 @@ export default {
     const response = await axios.post("/api/v1/authenticate", payload);
     console.log(response);
     context.commit("LOGIN", response.data.item);
-    sessionStorage.setItem("accessToken", response.data.accessToken);
-    sessionStorage.setItem("refreshToken", response.data.refreshToken);
+    localStorage.setItem("accessToken", response.data.accessToken);
+    localStorage.setItem("refreshToken", response.data.refreshToken);
   },
   async checkAccessToken() {
-    const userToken = sessionStorage.getItem("accessToken");
+    const userToken = localStorage.getItem("accessToken");
 
     const response = await axios.get("/api/v1/authenticate/", {
       headers: {
@@ -27,7 +27,7 @@ export default {
     console.log(response);
   },
   async checkRefreshToken(context) {
-    const userToken = sessionStorage.getItem("refreshToken");
+    const userToken = localStorage.getItem("refreshToken");
 
     const response = await axios.put(
       "/api/v1/authenticate/",
@@ -39,11 +39,11 @@ export default {
       }
     );
     context.commit("LOGIN", response.data.item);
-    sessionStorage.setItem("accessToken", response.data.accessToken);
-    sessionStorage.setItem("refreshToken", response.data.refreshToken);
+    localStorage.setItem("accessToken", response.data.accessToken);
+    localStorage.setItem("refreshToken", response.data.refreshToken);
   },
   async logout(context) {
-    const userToken = sessionStorage.getItem("accessToken");
+    const userToken = localStorage.getItem("accessToken");
 
     const response = await axios.delete("/api/v1/authenticate", {
       headers: {
@@ -52,8 +52,8 @@ export default {
     });
     console.log(response);
     context.commit("LOGOUT");
-    sessionStorage.removeItem("accessToken");
-    sessionStorage.removeItem("refreshToken");
+    localStorage.removeItem("accessToken");
+    localStorage.removeItem("refreshToken");
   },
   async forgotPassword(_, payload) {
     const response = await axios.post(

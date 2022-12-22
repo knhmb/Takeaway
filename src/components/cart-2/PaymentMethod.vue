@@ -44,6 +44,7 @@ export default {
   methods: {
     setOption(option) {
       this.currentOption = option;
+      this.$store.commit("cart/SET_PAYMENT_METHOD", option);
     },
   },
 };

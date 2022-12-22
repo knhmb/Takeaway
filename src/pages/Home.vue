@@ -4,7 +4,7 @@
     <Carousel />
     <Popular />
     <Favorites />
-    <LowestDelivery />
+    <!-- <LowestDelivery /> -->
   </section>
 </template>
 
@@ -12,14 +12,14 @@
 import Carousel from "@/components/home/Carousel.vue";
 import Popular from "@/components/home/Popular.vue";
 import Favorites from "@/components/home/Favorites.vue";
-import LowestDelivery from "../components/home/LowestDelivery.vue";
+// import LowestDelivery from "../components/home/LowestDelivery.vue";
 
 export default {
   components: {
     Carousel,
     Popular,
     Favorites,
-    LowestDelivery,
+    // LowestDelivery,
   },
   created() {
     this.$store.commit("CHANGE_AUTH_OPTION", "login");

@@ -5,4 +5,7 @@ export default {
   orders(state) {
     return state.orders;
   },
+  paymentMethod(state) {
+    return state.paymentMethod;
+  },
 };

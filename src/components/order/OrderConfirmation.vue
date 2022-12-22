@@ -1,18 +1,20 @@
 <template>
   <div class="order-confirmation">
     <h4>Waiting for confirmation</h4>
-    <carousel :breakpoints="breakpoints">
-      <slide v-for="slide in 5" :key="slide">
-        <div class="card">
-          <img src="../../assets/restaurant.png" alt="" />
-          <p class="name">Restaurant name restaurant name...</p>
-          <span>#1234</span>
-          <span>•</span>
-          <span>2022-08-11 12:31</span>
-          <p class="price">HK$ 98.00</p>
-          <el-button>Cancel order</el-button>
-        </div>
-      </slide>
+    <carousel v-if="orders.length > 0" :breakpoints="breakpoints">
+      <template v-for="order in orders" :key="order">
+        <slide v-if="order.status === 'Waiting_For_Confirmation'">
+          <div class="card">
+            <img src="../../assets/restaurant.png" alt="" />
+            <p class="name">{{ order.restaurant }}</p>
+            <span>#1234</span>
+            <span>•</span>
+            <span>2022-08-11 12:31</span>
+            <p class="price">HK$ 98.00</p>
+            <el-button>Cancel order</el-button>
+          </div>
+        </slide>
+      </template>
 
       <template #addons>
         <navigation />
@@ -51,6 +53,11 @@ export default {
         },
       },
     };
+  },
+  computed: {
+    orders() {
+      return this.$store.getters["cart/orders"];
+    },
   },
 };
 </script>
@@ -134,9 +141,6 @@ export default {
   margin-top: 0.5rem;
 }
 
-/* .order-confirmation :deep(.carousel__track) {
-  gap: 0.5rem;
-} */
 
 .order-confirmation :deep(.carousel__slide) {
   justify-content: flex-start;

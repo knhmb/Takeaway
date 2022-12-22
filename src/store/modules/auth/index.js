@@ -7,7 +7,7 @@ export default {
   state() {
     return {
       currentUserDetails: [],
-      isLoggedIn: false,
+      isLoggedIn: sessionStorage.getItem("accessToken"),
     };
   },
   getters,

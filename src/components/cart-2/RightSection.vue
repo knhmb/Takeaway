@@ -20,6 +20,9 @@ export default {
     productDetails() {
       return this.$store.getters["dashboard/productDetails"];
     },
+    paymentMethod() {
+      return this.$store.getters["cart/paymentMethod"];
+    },
   },
   methods: {
     checkout() {
@@ -27,31 +30,33 @@ export default {
       this.$store
         .dispatch("auth/checkAccessToken")
         .then(() => {
-          this.$store.dispatch(
-            "cart/stripePayment",
-            this.cart.resources.products
-          );
-          // .then(() => {
-          //   this.$store.dispatch("cart/getStripe", {
-          //     session: this.$route.query.success,
-          //     success: this.$route.query.success,
-          //   });
-          // });
+          if (this.paymentMethod === "stripe") {
+            this.$store.dispatch(
+              "cart/stripePayment",
+              this.cart.resources.products
+            );
+          } else {
+            this.$store.dispatch(
+              "cart/eWalletPayment",
+              this.cart.resources.products
+            );
+          }
         })
         .catch(() => {
           this.$store
             .dispatch("auth/checkRefreshToken")
             .then(() => {
-              this.$store.dispatch(
-                "cart/stripePayment",
-                this.cart.resources.products
-              );
-              // .then(() => {
-              //   this.$store.dispatch("cart/getStripe", {
-              //     session: this.$route.query.success,
-              //     success: this.$route.query.success,
-              //   });
-              // });
+              if (this.paymentMethod === "stripe") {
+                this.$store.dispatch(
+                  "cart/stripePayment",
+                  this.cart.resources.products
+                );
+              } else {
+                this.$store.dispatch(
+                  "cart/eWalletPayment",
+                  this.cart.resources.products
+                );
+              }
             })
             .catch(() => {
               ElNotification({

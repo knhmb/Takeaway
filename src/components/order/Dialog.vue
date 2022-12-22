@@ -3,7 +3,7 @@
   <div class="order-dialog">
     <el-dialog v-model="dialogVisible">
       <p class="estimated-time" v-if="isFailed">Order Failed!</p>
-      <div v-if="!isFailed" class="inner-box">
+      <div class="inner-box">
         <p class="estimated-time">Estimated delivery time</p>
         <p class="time">11:30 - 11:45</p>
         <div class="slider">
@@ -11,7 +11,7 @@
         </div>
         <p class="food-picked">Your rider has picked up your food.</p>
       </div>
-      <div v-if="!isFailed" class="inner-box">
+      <div class="inner-box">
         <h3>Order details</h3>
         <div class="items">
           <div class="single-item">
@@ -86,30 +86,32 @@ export default {
   mounted() {
     if (this.$route.query.success === "false") {
       this.isFailed = true;
-      this.$store
-        .dispatch("auth/checkAccessToken")
-        .then(() => {
-          this.$store.dispatch("cart/getOrder");
-        })
-        .catch(() => {
-          this.$store
-            .dispatch("auth/checkRefreshToken")
-            .then(() => {
-              this.$store.dispatch("cart/getOrder");
-            })
-            .catch(() => {
-              ElNotification({
-                title: "Error",
-                message: "Token Expired! Please Login Again.",
-                type: "error",
-              });
-              this.$store.dispatch("auth/logout");
-              this.$router.push("/");
-            });
-        });
     } else {
       this.isFailed = false;
     }
+    console.log(this.$route.query);
+    console.log(this.$route.query.id);
+    this.$store
+      .dispatch("auth/checkAccessToken")
+      .then(() => {
+        this.$store.dispatch("cart/getOrderDetails", this.$route.query.id);
+      })
+      .catch(() => {
+        this.$store
+          .dispatch("auth/checkRefreshToken")
+          .then(() => {
+            this.$store.dispatch("cart/getOrderDetails", this.$route.query.id);
+          })
+          .catch(() => {
+            ElNotification({
+              title: "Error",
+              message: "Token Expired! Please Login Again.",
+              type: "error",
+            });
+            this.$store.dispatch("auth/logout");
+            this.$router.push("/");
+          });
+      });
   },
 };
 </script>

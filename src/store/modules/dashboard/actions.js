@@ -20,7 +20,7 @@ export default {
     context.commit("SET_RESTUARANTS", response.data.items);
   },
   async bookmark(_, payload) {
-    const userToken = sessionStorage.getItem("accessToken");
+    const userToken = localStorage.getItem("accessToken");
 
     const response = await axios.post(
       `/api/v1/accounts/favourites/@me/restaurant/${payload}`,

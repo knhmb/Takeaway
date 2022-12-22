@@ -3,10 +3,22 @@
     <base-container>
       <h2>Popular Near You</h2>
 
-      <carousel :breakpoints="breakpoints">
-        <slide v-for="slide in 4" :key="slide">
+      <carousel v-if="restaurants.length > 0" :breakpoints="breakpoints">
+        <slide v-for="slide in restaurants" :key="slide">
           <el-row :gutter="10">
-            <el-col :sm="12" :md="6">
+            <el-col v-for="rest in restaurants" :key="rest" :sm="12" :md="6">
+              <div class="card">
+                <div class="top">
+                  <img src="../../assets/restaurant.png" alt="" />
+                  <img src="../../assets/bookmark-off.png" alt="" />
+                </div>
+                <p class="title">{{ rest.name }}</p>
+                <p class="description">
+                  {{ rest.description }}
+                </p>
+              </div>
+            </el-col>
+            <!-- <el-col :sm="12" :md="6">
               <div class="card">
                 <div class="top">
                   <img src="../../assets/restaurant.png" alt="" />
@@ -89,19 +101,7 @@
                   Lorem ipsum dolor sit amet consectetur adipiscing elit...
                 </p>
               </div>
-            </el-col>
-            <el-col :sm="12" :md="6">
-              <div class="card">
-                <div class="top">
-                  <img src="../../assets/restaurant.png" alt="" />
-                  <img src="../../assets/bookmark-off.png" alt="" />
-                </div>
-                <p class="title">Restaurants name restaurants...</p>
-                <p class="description">
-                  Lorem ipsum dolor sit amet consectetur adipiscing elit...
-                </p>
-              </div>
-            </el-col>
+            </el-col> -->
           </el-row>
         </slide>
 
@@ -143,6 +143,14 @@ export default {
         },
       },
     };
+  },
+  computed: {
+    restaurants() {
+      return this.$store.getters["dashboard/restuarants"];
+    },
+  },
+  created() {
+    this.$store.dispatch("dashboard/getRestuarants");
   },
 };
 </script>
