@@ -6,7 +6,7 @@
         <el-col v-for="item in addresses" :key="item" :span="12">
           <div class="inner-card">
             <div class="top">
-              <p>Address name</p>
+              <p>{{ item.name }}</p>
               <div class="more">
                 <img @click="openMore(item)" src="../assets/more.png" alt="" />
                 <div v-if="item.isVisible" class="more-content">
@@ -15,14 +15,11 @@
                 </div>
               </div>
             </div>
-            <p>
-              Address detail : lorem ipsum dolor sit amet consectetur adipiscing
-              elit
-            </p>
+            <p>Address detail : {{ item.unit }}</p>
           </div>
         </el-col>
-        <el-button @click="dialogVisible = true">Add new address</el-button>
       </el-row>
+      <el-button @click="dialogVisible = true">Add new address</el-button>
     </base-card>
     <MapsDialog
       @closedDialog="dialogVisible = $event"
@@ -55,7 +52,7 @@ export default {
       ],
     };
   },
-  compted: {
+  computed: {
     addresses() {
       return this.$store.getters["profile/addresses"];
     },
@@ -84,6 +81,7 @@ export default {
               type: "Error",
             });
             this.$store.dispatch("auth/logout");
+            this.$router.replace("/");
           });
       });
   },

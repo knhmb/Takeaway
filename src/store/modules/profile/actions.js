@@ -59,4 +59,14 @@ export default {
     );
     console.log(response);
   },
+  async saveAddress(_, payload) {
+    const userToken = localStorage.getItem("accessToken");
+
+    const response = await axios.post("/api/v1/accounts/addresses", payload, {
+      headers: {
+        Authorization: `Bearer ${userToken}`,
+      },
+    });
+    console.log(response);
+  },
 };

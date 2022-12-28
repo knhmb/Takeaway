@@ -8,12 +8,6 @@
 
 <script>
 export default {
-  data() {
-    return {
-      origin: "",
-      destination: "",
-    };
-  },
   mounted() {
     const originAutocomplete = new window.google.maps.places.Autocomplete(
       this.$refs["origin"],
