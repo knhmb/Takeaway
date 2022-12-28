@@ -11,64 +11,71 @@
         </div>
         <p class="food-picked">Your rider has picked up your food.</p>
       </div>
-      <div class="inner-box">
-        <h3>Order details</h3>
-        <div class="items">
-          <div class="single-item">
-            <p class="text">Your order number:</p>
-            <div class="pill">#1234</div>
+      {{ lastOrder }}
+      <template v-for="item in lastOrder.products" :key="item">
+        <div class="inner-box">
+          <h3>Order details</h3>
+          <div class="items">
+            <div class="single-item">
+              <p class="text">Your order number:</p>
+              <div class="pill">#1234</div>
+            </div>
+            <div class="single-item">
+              <p class="text">Your order from:</p>
+              <p class="answer">{{ lastOrder.restaurant }}</p>
+              <!-- <p class="answer">Papadam Indian Authentic</p> -->
+            </div>
+            <div class="single-item">
+              <p class="text">Delivery address</p>
+              <p class="answer">
+                Address detail lorem ipsum dolor sit amet, consectetur
+                adipiscing elit...
+              </p>
+            </div>
+            <div class="single-item">
+              <div class="right">
+                <span>{{ item.quantity }}x</span>
+                <p class="text">Product name</p>
+              </div>
+
+              <p class="text">HK$ {{ item.unitPrice * item.quantity }}</p>
+            </div>
+            <!-- <div class="single-item">
+            <div class="right">
+              <span>1x</span>
+              <p class="text">Product name</p>
+            </div>
+
+            <p class="text">HK$ 58.0</p>
           </div>
           <div class="single-item">
-            <p class="text">Your order from:</p>
-            <p class="answer">Papadam Indian Authentic</p>
+            <div class="right">
+              <span>1x</span>
+              <p class="text">Product name</p>
+            </div>
+
+            <p class="text">HK$ 58.0</p>
+          </div> -->
+          </div>
+          <div class="items">
+            <div class="single-item">
+              <p class="text">Subtotal</p>
+              <p class="text">HK$ {{ item.subtotal }}</p>
+            </div>
+            <div class="single-item">
+              <p class="text">Delivery fee</p>
+              <p class="text">HK$ {{ lastOrder.deliveryFee }}</p>
+            </div>
           </div>
           <div class="single-item">
-            <p class="text">Delivery address</p>
-            <p class="answer">
-              Address detail lorem ipsum dolor sit amet, consectetur adipiscing
-              elit...
+            <p class="total">Total</p>
+            <p class="total-price">
+              HK$ {{ item.subtotal * lastOrder.deliveryFee }}
             </p>
-          </div>
-          <div class="single-item">
-            <div class="right">
-              <span>1x</span>
-              <p class="text">Product name</p>
-            </div>
-
-            <p class="text">HK$ 58.0</p>
-          </div>
-          <div class="single-item">
-            <div class="right">
-              <span>1x</span>
-              <p class="text">Product name</p>
-            </div>
-
-            <p class="text">HK$ 58.0</p>
-          </div>
-          <div class="single-item">
-            <div class="right">
-              <span>1x</span>
-              <p class="text">Product name</p>
-            </div>
-
-            <p class="text">HK$ 58.0</p>
+            <!-- <p class="total-price">HK$ 174.0</p> -->
           </div>
         </div>
-        <div class="items">
-          <div class="single-item">
-            <p class="text">Subtotal</p>
-            <p class="text">HK$ 19.0</p>
-          </div>
-          <div class="single-item">
-            <p class="text">Delivery fee</p>
-            <p class="text">HK$ 15.0</p>
-          </div>
-        </div>
-        <div class="single-item">
-          <p class="total">Total</p>
-          <p class="total-price">HK$ 174.0</p>
-        </div>
-      </div>
+      </template>
     </el-dialog>
   </div>
 </template>
@@ -82,6 +89,16 @@ export default {
       isFailed: false,
       dialogVisible: true,
     };
+  },
+  computed: {
+    orderDetails() {
+      return this.$store.getters["cart/orderDetails"];
+    },
+    lastOrder() {
+      return this.orderDetails.find(
+        (item) => item.id === this.$route.params.id
+      );
+    },
   },
   mounted() {
     if (this.$route.query.success === "false") {

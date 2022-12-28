@@ -5,7 +5,8 @@
       :model-value="dialogVisible"
       width="55%"
     >
-      <Map />
+      <!-- <Map /> -->
+      <Autocomplete />
       <el-input
         placeholder="Enter your address"
         v-model="search"
@@ -17,11 +18,15 @@
 </template>
 
 <script>
-import Map from "../Map.vue";
+// import Map from "../Map.vue";
+import Autocomplete from "@/components/Autocomplete.vue";
 import { Search } from "@element-plus/icons-vue";
 
 export default {
-  components: { Map },
+  components: {
+    // Map,
+    Autocomplete,
+  },
   props: ["dialogVisible"],
   data() {
     return {

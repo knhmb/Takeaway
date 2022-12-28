@@ -8,4 +8,7 @@ export default {
   paymentMethod(state) {
     return state.paymentMethod;
   },
+  orderDetails(state) {
+    return state.orderDetails;
+  },
 };

@@ -25,10 +25,13 @@ app.use(Vue3Geolocation);
 app.use(i18n);
 app.use(VueGoogleMaps, {
   load: {
-    key: "AIzaSyDrD7PzHIVuzkYl53K-W0qRVNybp5d61CA",
+    // key: "AIzaSyDrD7PzHIVuzkYl53K-W0qRVNybp5d61CA",
+    key: "AIzaSyA_C47k8nUTryyy5VSf-ddIIKVPyLrQ0R4",
     libraries: "places",
+    // version: "weekly",
     // language: 'de',
   },
+  autobindAllEvents: true,
 });
 
 app.mount("#app");

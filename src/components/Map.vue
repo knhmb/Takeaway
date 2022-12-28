@@ -3,6 +3,7 @@
   <div class="map">
     <h3>Add a new address</h3>
     <GMapAutocomplete @place_changed="setPlace" />
+    <button @click="addMarker">Add</button>
 
     <GMapMap
       :center="center"
@@ -10,6 +11,14 @@
       map-type-id="terrain"
       style="width: 100vw; height: 900px"
     >
+      <GMapCluster :zoomOnClick="true">
+        <GmapMarker
+          :key="index"
+          v-for="(m, index) in markers"
+          :position="m.position"
+          @click="center = m.position"
+        />
+      </GMapCluster>
     </GMapMap>
 
     <!-- <GoogleMap
@@ -51,14 +60,30 @@ export default {
         lng: 10,
       },
       cuurentPlace: null,
+      markers: [],
+      places: [],
+      streetRef: "",
     };
   },
   methods: {
     dummy(location) {
       console.log(location);
     },
+    addMarker() {
+      if (this.currentPlace) {
+        const marker = {
+          lat: this.currentPlace.geometry.location.lat(),
+          lng: this.currentPlace.geometry.location.lng(),
+        };
+        this.markers.push({ position: marker });
+        this.places.push(this.currentPlace);
+        this.center = marker;
+        this.currentPlace = null;
+      }
+    },
     setPlace(place) {
       this.currentPlace = place;
+      console.log(place);
     },
     geolocate() {
       navigator.geolocation.getCurrentPosition((position) => {
@@ -69,6 +94,7 @@ export default {
       });
     },
   },
+
   // created() {
   //   this.$getLocation({})
   //     .then((coordinates) => {

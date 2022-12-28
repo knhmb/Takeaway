@@ -5,12 +5,13 @@
         <el-col :span="12">
           <p @click="$router.push('/')" class="logo-text">Takeaway</p>
           <el-input
+            v-model="searchItem"
             placeholder="Search Restaurant and Product"
             :prefix-icon="Search"
           ></el-input>
           <img
             style="cursor: pointer"
-            @click="$router.push('/search')"
+            @click="search"
             src="../../assets/filter.png"
             alt=""
           />
@@ -67,6 +68,7 @@ export default {
       Search,
       dialogVisible: false,
       isMenuDisplayed: false,
+      searchItem: "",
     };
   },
   computed: {
@@ -77,6 +79,13 @@ export default {
   methods: {
     toggleMenu() {
       this.isMenuDisplayed = !this.isMenuDisplayed;
+    },
+    search() {
+      this.$store
+        .dispatch("dashboard/getRestuarants", this.searchItem)
+        .then(() => {
+          this.$router.push("/search");
+        });
     },
     logout() {
       this.$store

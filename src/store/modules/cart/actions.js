@@ -77,7 +77,7 @@ export default {
     console.log(response);
     window.location.href = response.data.redirect;
   },
-  async getOrderDetails(_, payload) {
+  async getOrderDetails(context, payload) {
     const userToken = localStorage.getItem("accessToken");
 
     const response = await axios.get(`/api/v1/platform/orders/${payload}`, {
@@ -86,5 +86,6 @@ export default {
       },
     });
     console.log(response);
+    context.commit("SET_ORDER_DETAILS", response.data.items);
   },
 };

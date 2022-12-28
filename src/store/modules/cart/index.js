@@ -9,6 +9,7 @@ export default {
       cart: [],
       orders: [],
       paymentMethod: "",
+      orderDetails: [],
     };
   },
   getters,

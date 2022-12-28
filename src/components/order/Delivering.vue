@@ -19,6 +19,7 @@
         <navigation />
       </template>
     </carousel>
+    {{ orders }}
   </div>
 </template>
   
@@ -56,6 +57,14 @@ export default {
   computed: {
     orders() {
       return this.$store.getters["cart/orders"];
+    },
+    orderDetails() {
+      return this.$store.getters["cart/orderDetails"];
+    },
+    lastOrder() {
+      return this.orderDetails.find(
+        (item) => item.id === this.$route.params.id
+      );
     },
   },
 };

@@ -14,8 +14,12 @@ export default {
     console.log(response);
     context.commit("SET_BANNERS", response.data.items);
   },
-  async getRestuarants(context) {
-    const response = await axios.get("/api/v1/accounts/restaurants");
+  async getRestuarants(context, payload) {
+    const response = await axios.get("/api/v1/accounts/restaurants", {
+      params: {
+        search: payload,
+      },
+    });
     console.log(response);
     context.commit("SET_RESTUARANTS", response.data.items);
   },

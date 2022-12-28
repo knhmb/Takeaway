@@ -11,9 +11,9 @@ import Restaurant from "@/components/search/Restaurant.vue";
 import Product from "@/components/search/Product.vue";
 export default {
   components: { Restaurant, Product },
-  created() {
-    this.$store.dispatch("dashboard/getRestuarants");
-  },
+  // created() {
+  //   this.$store.dispatch("dashboard/getRestuarants");
+  // },
 };
 </script>
 
