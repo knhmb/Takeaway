@@ -1,12 +1,29 @@
 <template>
-  <div class="favorites">
+  <div class="favorites" v-if="isLoggedIn">
     <base-container>
       <h2>Favorites</h2>
 
       <carousel :breakpoints="breakpoints">
-        <slide v-for="slide in 4" :key="slide">
+        <slide v-for="slide in bookmarks.resources.restaurants" :key="slide">
           <el-row :gutter="10">
-            <el-col :sm="12" :md="6">
+            <el-col
+              :sm="12"
+              :md="6"
+              v-for="item in bookmarks.resources.restaurants"
+              :key="item"
+            >
+              <div class="card">
+                <div class="top">
+                  <img src="../../assets/restaurant.png" alt="" />
+                  <img src="../../assets/bookmark-off.png" alt="" />
+                </div>
+                <p class="title">{{ item.name }}</p>
+                <p class="description">
+                  {{ item.description }}
+                </p>
+              </div>
+            </el-col>
+            <!-- <el-col :sm="12" :md="6">
               <div class="card">
                 <div class="top">
                   <img src="../../assets/restaurant.png" alt="" />
@@ -89,19 +106,7 @@
                   Lorem ipsum dolor sit amet consectetur adipiscing elit...
                 </p>
               </div>
-            </el-col>
-            <el-col :sm="12" :md="6">
-              <div class="card">
-                <div class="top">
-                  <img src="../../assets/restaurant.png" alt="" />
-                  <img src="../../assets/bookmark-off.png" alt="" />
-                </div>
-                <p class="title">Restaurants name restaurants...</p>
-                <p class="description">
-                  Lorem ipsum dolor sit amet consectetur adipiscing elit...
-                </p>
-              </div>
-            </el-col>
+            </el-col> -->
           </el-row>
         </slide>
 
@@ -116,6 +121,7 @@
   <script>
 import "vue3-carousel/dist/carousel.css";
 import { Carousel, Slide, Navigation } from "vue3-carousel";
+import { ElNotification } from "element-plus";
 
 export default {
   name: "App",
@@ -143,6 +149,41 @@ export default {
         },
       },
     };
+  },
+  computed: {
+    isLoggedIn() {
+      return this.$store.getters["auth/isLoggedIn"];
+    },
+    bookmarks() {
+      return this.$store.getters["profile/bookmarks"];
+    },
+  },
+  watch: {
+    isLoggedIn() {
+      if (this.isLoggedIn) {
+        this.$store
+          .dispatch("auth/checkAccessToken")
+          .then(() => {
+            this.$store.dispatch("profile/getBookmarks");
+          })
+          .catch(() => {
+            this.$store
+              .dispatch("auth/checkRefreshToken")
+              .then(() => {
+                this.$store.dispatch("profile/getBookmarks");
+              })
+              .catch(() => {
+                ElNotification({
+                  title: "Error",
+                  message: "Token Expired! Please Login again.",
+                  type: "error",
+                });
+                this.$store.dispatch("logout");
+                this.$router.replace("/");
+              });
+          });
+      }
+    },
   },
 };
 </script>

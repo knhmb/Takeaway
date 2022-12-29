@@ -22,12 +22,12 @@ export default {
     console.log(response);
     context.commit("SET_CART", response.data);
   },
-  async stripePayment() {
+  async stripePayment(_, payload) {
     const userToken = localStorage.getItem("accessToken");
 
     const response = await axios.post(
       "/api/v1/platform/checkout/stripe",
-      {},
+      { address: payload.address },
       {
         headers: {
           Authorization: `Bearer ${userToken}`,
@@ -62,12 +62,12 @@ export default {
     console.log(response);
     context.commit("SET_ORDERS", response.data.items);
   },
-  async eWalletPayment() {
+  async eWalletPayment(_, payload) {
     const userToken = localStorage.getItem("accessToken");
 
     const response = await axios.post(
       "/api/v1/platform/checkout/ewallet",
-      {},
+      { address: payload.address },
       {
         headers: {
           Authorization: `Bearer ${userToken}`,
@@ -86,6 +86,6 @@ export default {
       },
     });
     console.log(response);
-    context.commit("SET_ORDER_DETAILS", response.data.items);
+    context.commit("SET_ORDER_DETAILS", response.data.item);
   },
 };

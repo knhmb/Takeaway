@@ -31,5 +31,6 @@ export default {
 <style scoped>
 .home {
   background: #f2f2f2;
+  height: 100vh;
 }
 </style>

@@ -23,6 +23,9 @@ export default {
     paymentMethod() {
       return this.$store.getters["cart/paymentMethod"];
     },
+    addresses() {
+      return this.$store.getters["profile/addresses"];
+    },
   },
   methods: {
     checkout() {
@@ -31,15 +34,15 @@ export default {
         .dispatch("auth/checkAccessToken")
         .then(() => {
           if (this.paymentMethod === "stripe") {
-            this.$store.dispatch(
-              "cart/stripePayment",
-              this.cart.resources.products
-            );
+            this.$store.dispatch("cart/stripePayment", {
+              address: this.addresses[0].id,
+              cart: this.cart.resources.products,
+            });
           } else {
-            this.$store.dispatch(
-              "cart/eWalletPayment",
-              this.cart.resources.products
-            );
+            this.$store.dispatch("cart/eWalletPayment", {
+              address: this.addresses[0].id,
+              cart: this.cart.resources.products,
+            });
           }
         })
         .catch(() => {

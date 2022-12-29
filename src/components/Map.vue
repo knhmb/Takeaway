@@ -163,6 +163,14 @@ export default {
           this.$store.dispatch("profile/saveAddress", data).then(() => {
             this.$store.dispatch("profile/getAddresses");
             this.$emit("closedDialog", false);
+            this.currentStep = 1;
+            this.selectedCity = null;
+            this.selectedLocation = null;
+            this.unit = "";
+            this.block = "";
+            this.addressName = "";
+            this.latitude = "";
+            this.longtitude = "";
           });
         })
         .catch(() => {
@@ -172,6 +180,14 @@ export default {
               this.$store.dispatch("profile/saveAddress", data).then(() => {
                 this.$store.dispatch("profile/getAddresses");
                 this.$emit("closedDialog", false);
+                this.currentStep = 1;
+                this.selectedCity = null;
+                this.selectedLocation = null;
+                this.unit = "";
+                this.block = "";
+                this.addressName = "";
+                this.latitude = "";
+                this.longtitude = "";
               });
             })
             .catch(() => {

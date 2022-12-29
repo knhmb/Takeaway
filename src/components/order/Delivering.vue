@@ -19,7 +19,6 @@
         <navigation />
       </template>
     </carousel>
-    {{ orders }}
   </div>
 </template>
   

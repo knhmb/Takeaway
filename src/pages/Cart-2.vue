@@ -10,13 +10,14 @@
                 <img src="../assets/address.png" alt="" />
                 <p class="address">Delivery address</p>
               </div>
-              <img src="../assets/edit.png" alt="" />
+              <img
+                @click="addressDialog = true"
+                src="../assets/edit.png"
+                alt=""
+              />
             </div>
-            <p class="name">Address name</p>
-            <p class="detail">
-              Address detail : lorem ipsum dolor sit amet, consectetur
-              adipiscing elit.
-            </p>
+            <p class="name">{{ addresses[0].name }}</p>
+            <p class="detail">Address detail : {{ addresses[0].unit }}</p>
           </div>
           <PaymentMethod />
           <OrderSummary />
@@ -26,6 +27,7 @@
         </el-col>
       </el-row>
     </base-container>
+    <Addresses :address-dialog="addressDialog" />
   </section>
 </template>
 
@@ -33,10 +35,46 @@
 import PaymentMethod from "@/components/cart-2/PaymentMethod.vue";
 import OrderSummary from "@/components/cart-2/OrderSummary.vue";
 import RightSection from "@/components/cart-2/RightSection.vue";
+import { ElNotification } from "element-plus";
+import Addresses from "@/components/cart-2/Addresses.vue";
 export default {
-  components: { PaymentMethod, OrderSummary, RightSection },
+  components: { PaymentMethod, OrderSummary, RightSection, Addresses },
+  data() {
+    return {
+      addressDialog: false,
+    };
+  },
+  computed: {
+    addresses() {
+      return this.$store.getters["profile/addresses"];
+    },
+  },
+  created() {
+    this.$store
+      .dispatch("auth/checkAccessToken")
+      .then(() => {
+        this.$store.dispatch("profile/getAddresses");
+      })
+      .catch(() => {
+        this.$store
+          .dispatch("auth/checkRefreshToken")
+          .then(() => {
+            this.$store.dispatch("profile/getAddresses");
+          })
+          .catch(() => {
+            ElNotification({
+              title: "Error",
+              message: "Token Expired! Please Login Again!",
+              type: "Error",
+            });
+            this.$store.dispatch("auth/logout");
+            this.$router.replace("/");
+          });
+      });
+  },
 };
 </script>
+
 
 <style scoped>
 .cart-2 {
