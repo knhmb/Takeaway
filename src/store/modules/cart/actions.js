@@ -77,6 +77,22 @@ export default {
     console.log(response);
     window.location.href = response.data.redirect;
   },
+  async cashPayment(_, payload) {
+    const userToken = localStorage.getItem("userToken");
+
+    const response = await axios.post(
+      "/api/v1/platform/checkout/cash",
+      {
+        address: payload.address,
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${userToken}`,
+        },
+      }
+    );
+    window.location.href = response.data.redirect;
+  },
   async getOrderDetails(context, payload) {
     const userToken = localStorage.getItem("accessToken");
 

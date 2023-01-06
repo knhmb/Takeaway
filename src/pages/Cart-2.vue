@@ -16,18 +16,26 @@
                 alt=""
               />
             </div>
-            <p class="name">{{ addresses[0].name }}</p>
-            <p class="detail">Address detail : {{ addresses[0].unit }}</p>
+            <p class="name">{{ address.name }}</p>
+            <p class="detail">Address detail : {{ address.unit }}</p>
           </div>
           <PaymentMethod />
           <OrderSummary />
         </el-col>
         <el-col :sm="24" :lg="8">
-          <RightSection />
+          <RightSection :address="address" />
         </el-col>
       </el-row>
     </base-container>
-    <Addresses :address-dialog="addressDialog" />
+    <Addresses
+      @closedDialog="addressDialog = $event"
+      @selectedAddress="assignSelectedAddress"
+      :address-dialog="addressDialog"
+    />
+    <!-- <MapsDialog
+      :dialog-visible="dialogVisible"
+      @closedDialog="dialogVisible = $event"
+    /> -->
   </section>
 </template>
 
@@ -37,16 +45,37 @@ import OrderSummary from "@/components/cart-2/OrderSummary.vue";
 import RightSection from "@/components/cart-2/RightSection.vue";
 import { ElNotification } from "element-plus";
 import Addresses from "@/components/cart-2/Addresses.vue";
+// import MapsDialog from "@/components/delivery-address/MapsDialog.vue";
 export default {
-  components: { PaymentMethod, OrderSummary, RightSection, Addresses },
+  components: {
+    PaymentMethod,
+    OrderSummary,
+    RightSection,
+    Addresses,
+    // MapsDialog,
+  },
   data() {
     return {
       addressDialog: false,
+      dialogVisible: false,
+      address: {
+        name: "",
+        unit: "",
+        id: "",
+      },
     };
   },
   computed: {
     addresses() {
       return this.$store.getters["profile/addresses"];
+    },
+  },
+  methods: {
+    assignSelectedAddress({ name, unit, id }) {
+      console.log(name, unit, id);
+      this.address.name = name;
+      this.address.unit = unit;
+      this.address.id = id;
     },
   },
   created() {
@@ -108,6 +137,7 @@ export default {
 
 .cart-2 .card .top img {
   width: 1.6rem;
+  cursor: pointer;
 }
 
 .cart-2 .card .top .text p {

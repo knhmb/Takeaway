@@ -13,6 +13,7 @@
 <script>
 import { ElNotification } from "element-plus";
 export default {
+  props: ["address"],
   computed: {
     cart() {
       return this.$store.getters["cart/cart"];
@@ -29,18 +30,31 @@ export default {
   },
   methods: {
     checkout() {
+      if (this.address.name === "") {
+        ElNotification({
+          title: "Error",
+          message: "Please Select an address",
+          type: "error",
+        });
+        return;
+      }
       console.log(this.cart.resources.products);
       this.$store
         .dispatch("auth/checkAccessToken")
         .then(() => {
           if (this.paymentMethod === "stripe") {
             this.$store.dispatch("cart/stripePayment", {
-              address: this.addresses[0].id,
+              address: this.address.id,
+              cart: this.cart.resources.products,
+            });
+          } else if (this.paymentMethod === "cash") {
+            this.$store.dispatch("cart/cashPayment", {
+              address: this.address.id,
               cart: this.cart.resources.products,
             });
           } else {
             this.$store.dispatch("cart/eWalletPayment", {
-              address: this.addresses[0].id,
+              address: this.address.id,
               cart: this.cart.resources.products,
             });
           }
@@ -50,15 +64,20 @@ export default {
             .dispatch("auth/checkRefreshToken")
             .then(() => {
               if (this.paymentMethod === "stripe") {
-                this.$store.dispatch(
-                  "cart/stripePayment",
-                  this.cart.resources.products
-                );
+                this.$store.dispatch("cart/stripePayment", {
+                  address: this.address.id,
+                  cart: this.cart.resources.products,
+                });
+              } else if (this.paymentMethod === "cash") {
+                this.$store.dispatch("cart/cashPayment", {
+                  address: this.address.id,
+                  cart: this.cart.resources.products,
+                });
               } else {
-                this.$store.dispatch(
-                  "cart/eWalletPayment",
-                  this.cart.resources.products
-                );
+                this.$store.dispatch("cart/eWalletPayment", {
+                  address: this.address.id,
+                  cart: this.cart.resources.products,
+                });
               }
             })
             .catch(() => {
