@@ -11,10 +11,16 @@
           ></el-input>
           <img
             style="cursor: pointer"
-            @click="search"
+            @click="filterDialog = true"
             src="../../assets/filter.png"
             alt=""
           />
+          <!-- <img
+            style="cursor: pointer"
+            @click="search"
+            src="../../assets/filter.png"
+            alt=""
+          /> -->
         </el-col>
 
         <el-col :span="12">
@@ -53,6 +59,10 @@
       :dialog-visible="dialogVisible"
       @closedDialog="dialogVisible = $event"
     />
+    <FilterDialog
+      @closedDialog="filterDialog = $event"
+      :filter-dialog="filterDialog"
+    />
   </header>
 </template>
 
@@ -60,15 +70,17 @@
 import { Search } from "@element-plus/icons-vue";
 import AuthDialog from "../AuthDialog.vue";
 import { ElNotification } from "element-plus";
+import FilterDialog from "@/components/FilterDialog.vue";
 
 export default {
-  components: { AuthDialog },
+  components: { AuthDialog, FilterDialog },
   data() {
     return {
       Search,
       dialogVisible: false,
       isMenuDisplayed: false,
       searchItem: "",
+      filterDialog: false,
     };
   },
   computed: {

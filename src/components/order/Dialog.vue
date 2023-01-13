@@ -11,7 +11,6 @@
         </div>
         <p class="food-picked">Your rider has picked up your food.</p>
       </div>
-      {{ orderDetails }}
       <template v-for="item in orderDetails.products" :key="item">
         <div class="inner-box">
           <h3>Order details</h3>
@@ -22,15 +21,15 @@
             </div>
             <div class="single-item">
               <p class="text">Your order from:</p>
-              <!-- <p class="answer">{{ lastOrder.restaurant }}</p> -->
-              <p class="answer">Papadam Indian Authentic</p>
+              <p class="answer">{{ orderDetails.restaurant }}</p>
+              <!-- <p class="answer">Papadam Indian Authentic</p> -->
             </div>
             <div class="single-item">
               <p class="text">Delivery address</p>
               <p class="answer">
                 {{ orderDetails.address.snapshot.name }} -
-                {{ orderDetails.address.snaphot.building }} -
-                {{ orderDetails.address.snaphot.unit }}
+                {{ orderDetails.address.snapshot.building }} -
+                {{ orderDetails.address.snapshot.unit }}
               </p>
               <!-- <p class="answer">
                 Address detail lorem ipsum dolor sit amet, consectetur
@@ -72,7 +71,7 @@
             </div>
             <div class="single-item">
               <p class="text">Delivery fee</p>
-              <p class="text">HK$ {{ orderDetails.deliverFee }}</p>
+              <p class="text">HK$ {{ orderDetails.deliveryFee }}</p>
               <!-- <p class="text">HK$ {{ lastOrder.deliveryFee }}</p> -->
             </div>
           </div>
@@ -80,7 +79,7 @@
             <p class="total">Total</p>
             <!-- <p class="total-price">HK$ 100.00</p> -->
             <p class="total-price">
-              HK$ {{ item.subtotal * orderDetails.deliveryFee }}
+              HK$ {{ item.subtotal + orderDetails.deliveryFee }}
             </p>
             <!-- <p class="total-price">HK$ 174.0</p> -->
           </div>
