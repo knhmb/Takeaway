@@ -3,7 +3,10 @@
     <base-container>
       <h2>Favorites</h2>
 
-      <carousel :breakpoints="breakpoints">
+      <carousel
+        :breakpoints="breakpoints"
+        v-if="bookmarks.resources.restaurants.length > 0"
+      >
         <slide v-for="slide in bookmarks.resources.restaurants" :key="slide">
           <el-row :gutter="10">
             <el-col

@@ -14,4 +14,7 @@ export default {
   productDetails(state) {
     return state.productDetails;
   },
+  options(state) {
+    return state.options;
+  },
 };

@@ -14,4 +14,7 @@ export default {
   SET_PRODUCT_DETAILS(state, payload) {
     state.productDetails = payload;
   },
+  SET_OPTIONS(state, payload) {
+    state.options = payload;
+  },
 };

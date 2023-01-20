@@ -5,7 +5,7 @@
         <h3>Filter</h3>
         <img @click="closeDialog" src="../assets/close.png" alt="" />
       </div>
-      <FilterMap />
+      <FilterMap @closedDialog="closeDialog" />
       <!-- <div class="map-content">
         <GoogleMap
           api-key="AIzaSyA_C47k8nUTryyy5VSf-ddIIKVPyLrQ0R4"

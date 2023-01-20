@@ -11,6 +11,7 @@ export default {
       restuarants: [],
       restaurantDetails: [],
       productDetails: [],
+      options: [],
     };
   },
   getters,

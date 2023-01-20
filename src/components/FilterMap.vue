@@ -19,8 +19,14 @@
       </div>
       <div class="input-content">
         <p class="label">Restaurant Type</p>
-        <el-select>
-          <el-option label="Nice" value="nice"></el-option>
+        <!-- <input v-model="type" type="text" placeholder="Enter type" /> -->
+        <el-select v-model="type">
+          <el-option
+            v-for="option in options"
+            :key="option.id"
+            :label="option.name"
+            :value="option.slug"
+          ></el-option>
         </el-select>
         <el-button @click="filter">Apply</el-button>
       </div>
@@ -46,7 +52,6 @@
 </template>
   
   <script>
-import { ElNotification } from "element-plus";
 import { GoogleMap, Marker } from "vue3-google-map";
 
 export default {
@@ -57,6 +62,7 @@ export default {
   data() {
     return {
       search: "",
+      type: "",
       map: null,
       coordinates: {
         lat: 0,
@@ -84,9 +90,20 @@ export default {
       longtitude: "",
     };
   },
+  computed: {
+    options() {
+      return this.$store.getters["dashboard/options"];
+    },
+  },
   methods: {
-    dummy(location) {
-      console.log(location);
+    filter() {
+      this.$store
+        .dispatch("dashboard/filterRestaurants", this.type)
+        .then(() => {
+          this.$emit("closedDialog", false);
+          this.$router.push("/search");
+          this.type = "";
+        });
     },
     addMarker() {
       if (this.currentPlace) {
@@ -111,79 +128,6 @@ export default {
           lng: position.coords.longitude,
         };
       });
-    },
-    saveLocation() {
-      if (!this.selectedLocation) {
-        ElNotification({
-          title: "Error",
-          message: "Please Select a Location!",
-          type: "error",
-        });
-        return;
-      }
-      this.currentStep = 2;
-    },
-    saveAddress() {
-      if ([this.unit, this.block, this.addressName].includes("")) {
-        ElNotification({
-          title: "Error",
-          message: "Please fill all the fields!",
-          type: "error",
-        });
-        return;
-      }
-      const data = {
-        name: this.selectedCity,
-        unit: this.unit,
-        building: this.block,
-        longtitude: this.longtitude,
-        latitude: this.latitude,
-      };
-
-      this.$store
-        .dispatch("auth/checkAccessToken")
-        .then(() => {
-          this.$store.dispatch("profile/saveAddress", data).then(() => {
-            this.$store.dispatch("profile/getAddresses");
-            this.$emit("closedDialog", false);
-            this.currentStep = 1;
-            this.selectedCity = null;
-            this.selectedLocation = null;
-            this.unit = "";
-            this.block = "";
-            this.addressName = "";
-            this.latitude = "";
-            this.longtitude = "";
-          });
-        })
-        .catch(() => {
-          this.$store
-            .dispatch("auth/checkRefreshToken")
-            .then(() => {
-              this.$store.dispatch("profile/saveAddress", data).then(() => {
-                this.$store.dispatch("profile/getAddresses");
-                this.$emit("closedDialog", false);
-                this.currentStep = 1;
-                this.selectedCity = null;
-                this.selectedLocation = null;
-                this.unit = "";
-                this.block = "";
-                this.addressName = "";
-                this.latitude = "";
-                this.longtitude = "";
-              });
-            })
-            .catch(() => {
-              ElNotification({
-                title: "Error",
-                message: "Token Expired! Please Login Again!",
-                type: "Error",
-              });
-              this.$emit("closedDialog", false);
-              this.$store.dispatch("auth/logout");
-              this.$router.replace("/");
-            });
-        });
     },
   },
   mounted() {
@@ -218,19 +162,9 @@ export default {
       }
     });
   },
-
-  // created() {
-  //   this.$getLocation({})
-  //     .then((coordinates) => {
-  //       console.log(coordinates);
-  //       this.coordinates = coordinates;
-  //     })
-  //     .catch((err) => alert(err));
-  // },
-  // mounted() {
-  //   this.geolocate();
-
-  // },
+  created() {
+    this.$store.dispatch("dashboard/getOptions");
+  },
 };
 </script>
   

@@ -23,6 +23,15 @@ export default {
     console.log(response);
     context.commit("SET_RESTUARANTS", response.data.items);
   },
+  async filterRestaurants(context, payload) {
+    const response = await axios.get("/api/v1/accounts/restaurants", {
+      params: {
+        filter: `category:${payload}`,
+      },
+    });
+    console.log(response);
+    context.commit("SET_RESTUARANTS", response.data.items);
+  },
   async bookmark(_, payload) {
     const userToken = localStorage.getItem("accessToken");
 
@@ -46,6 +55,10 @@ export default {
     context.commit("SET_PRODUCT_DETAILS", response.data.item);
     context.dispatch("getRestaurantDetails", response.data.item.restaurant);
     // console.log(context);
+  },
+  async getOptions(context) {
+    const response = await axios.get("/api/v1/options/items");
+    context.commit("SET_OPTIONS", response.data.items);
   },
   // async addToCart(_, payload) {
   //   const userToken = sessionStorage.getItem("accessToken");
